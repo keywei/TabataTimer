@@ -1,0 +1,74 @@
+{
+  "@@locale": "zh_TW",
+  "appTitle": "Tabata 計時器",
+
+  "tabPresets": "預設",
+  "tabHistory": "紀錄",
+  "tabSettings": "設定",
+
+  "presetsEmpty": "還沒有預設。點 + 建立一個。",
+  "newPreset": "新增預設",
+  "editPreset": "編輯預設",
+  "actionStart": "開始",
+  "actionEdit": "編輯",
+  "actionSave": "儲存",
+  "actionCancel": "取消",
+  "actionDelete": "刪除",
+  "actionContinue": "繼續",
+  "actionStop": "停止",
+
+  "deletePresetTitle": "刪除「{name}」?",
+
+  "fieldName": "名稱",
+  "fieldPrepare": "準備時間(秒)",
+  "fieldWork": "工作時間(秒)",
+  "fieldRest": "休息時間(秒)",
+  "fieldRounds": "回合數",
+  "fieldSets": "組數",
+  "fieldRestBetweenSets": "組間休息(秒)",
+  "untitled": "未命名",
+
+  "presetSummary": "{sets, plural, =1{} other{{sets} 組 · }}{rounds} 回合 · 工作 {work}s / 休息 {rest}s · 總時長 {duration}",
+
+  "phasePrepare": "準備",
+  "phaseWork": "工作",
+  "phaseRest": "休息",
+  "phaseSetBreak": "組間休息",
+  "phaseDone": "完成",
+
+  "ttsGetReady": "準備開始",
+  "ttsWork": "開始",
+  "ttsRest": "休息",
+  "ttsRoundWork": "第 {round} 回合,開始",
+  "ttsSetComplete": "本組完成",
+  "ttsWorkoutComplete": "訓練結束",
+
+  "totalLabel": "總計 {time}",
+  "doneLabel": "完成!",
+
+  "setRoundChip": "第 {set} / {totalSets} 組",
+  "roundChip": "第 {round} / {totalRounds} 回合",
+
+  "stopWorkoutTitle": "停止訓練?",
+  "stopWorkoutBody": "進度將會遺失。",
+
+  "historyEmpty": "尚無完成的訓練紀錄。\n完成一次訓練後會顯示在這裡。",
+  "historyToday": "今天",
+  "historyYesterday": "昨天",
+  "historyEntrySubtitle": "{rounds} 回合 · {duration}",
+  "historyClearTitle": "清除所有紀錄?",
+  "historyClearAction": "清除紀錄",
+
+  "settingsLanguage": "語言",
+  "settingsTheme": "主題",
+  "settingsAbout": "關於",
+  "themeSystem": "跟隨系統",
+  "themeLight": "明亮",
+  "themeDark": "深色",
+  "languageSystem": "系統預設",
+  "languageEnglish": "English",
+  "languageChinese": "繁體中文",
+
+  "notifWorkoutCompleteTitle": "訓練完成!",
+  "notifWorkoutCompleteBody": "做得好,你完成了這次 Tabata。"
+}

@@ -1,0 +1,99 @@
+{
+  "@@locale": "en",
+  "appTitle": "Tabata Timer",
+
+  "tabPresets": "Presets",
+  "tabHistory": "History",
+  "tabSettings": "Settings",
+
+  "presetsEmpty": "No presets yet. Tap + to create one.",
+  "newPreset": "New preset",
+  "editPreset": "Edit preset",
+  "actionStart": "Start",
+  "actionEdit": "Edit",
+  "actionSave": "SAVE",
+  "actionCancel": "Cancel",
+  "actionDelete": "Delete",
+  "actionContinue": "Continue",
+  "actionStop": "Stop",
+
+  "deletePresetTitle": "Delete \"{name}\"?",
+  "@deletePresetTitle": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+
+  "fieldName": "Name",
+  "fieldPrepare": "Prepare (seconds)",
+  "fieldWork": "Work (seconds)",
+  "fieldRest": "Rest (seconds)",
+  "fieldRounds": "Rounds",
+  "fieldSets": "Sets",
+  "fieldRestBetweenSets": "Rest between sets (seconds)",
+  "untitled": "Untitled",
+
+  "presetSummary": "{sets, plural, =1{} other{{sets} sets · }}{rounds} rounds · {work}s work / {rest}s rest · total {duration}",
+  "@presetSummary": {
+    "placeholders": {
+      "sets": { "type": "int" },
+      "rounds": { "type": "int" },
+      "work": { "type": "int" },
+      "rest": { "type": "int" },
+      "duration": { "type": "String" }
+    }
+  },
+
+  "phasePrepare": "GET READY",
+  "phaseWork": "WORK",
+  "phaseRest": "REST",
+  "phaseSetBreak": "SET BREAK",
+  "phaseDone": "DONE",
+
+  "ttsGetReady": "Get ready",
+  "ttsWork": "Work",
+  "ttsRest": "Rest",
+  "ttsRoundWork": "Round {round}, work",
+  "@ttsRoundWork": {
+    "placeholders": { "round": { "type": "int" } }
+  },
+  "ttsSetComplete": "Set complete",
+  "ttsWorkoutComplete": "Workout complete",
+
+  "totalLabel": "Total {time}",
+  "@totalLabel": { "placeholders": { "time": { "type": "String" } } },
+  "doneLabel": "Done!",
+
+  "setRoundChip": "Set {set} / {totalSets}",
+  "@setRoundChip": {
+    "placeholders": { "set": { "type": "int" }, "totalSets": { "type": "int" } }
+  },
+  "roundChip": "Round {round} / {totalRounds}",
+  "@roundChip": {
+    "placeholders": { "round": { "type": "int" }, "totalRounds": { "type": "int" } }
+  },
+
+  "stopWorkoutTitle": "Stop workout?",
+  "stopWorkoutBody": "Your progress will be lost.",
+
+  "historyEmpty": "No completed workouts yet.\nFinish a session and it will show up here.",
+  "historyToday": "Today",
+  "historyYesterday": "Yesterday",
+  "historyEntrySubtitle": "{rounds} rounds · {duration}",
+  "@historyEntrySubtitle": {
+    "placeholders": { "rounds": { "type": "int" }, "duration": { "type": "String" } }
+  },
+  "historyClearTitle": "Clear all history?",
+  "historyClearAction": "Clear history",
+
+  "settingsLanguage": "Language",
+  "settingsTheme": "Theme",
+  "settingsAbout": "About",
+  "themeSystem": "Follow system",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "languageSystem": "System default",
+  "languageEnglish": "English",
+  "languageChinese": "繁體中文",
+
+  "notifWorkoutCompleteTitle": "Workout complete!",
+  "notifWorkoutCompleteBody": "Great job — you finished your Tabata."
+}
