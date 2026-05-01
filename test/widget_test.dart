@@ -1,3 +1,4 @@
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tabata_timer/domain/clock.dart';
 import 'package:tabata_timer/domain/entities/tabata_preset.dart';
@@ -162,6 +163,76 @@ void main() {
       expect(engine.state.isRunning, false);
 
       await engine.dispose();
+    });
+  });
+
+  group('TimerEngine countdown stream', () {
+    test('emits 3, 2, 1 when last three seconds of a phase tick down', () {
+      fakeAsync((async) {
+        final engine = TimerEngine(clock: const SystemClock());
+        const preset = TabataPreset(
+          id: 'x', name: 'p',
+          prepareSeconds: 0, workSeconds: 10, restSeconds: 10,
+          rounds: 1,
+        );
+
+        final emitted = <int>[];
+        engine.countdowns.listen(emitted.add);
+
+        engine.start(preset);
+        async.elapse(const Duration(seconds: 10));
+
+        expect(emitted, [3, 2, 1]);
+
+        engine.dispose();
+        async.flushMicrotasks();
+      });
+    });
+
+    test('does not emit during a phase shorter than 4 seconds', () {
+      fakeAsync((async) {
+        final engine = TimerEngine(clock: const SystemClock());
+        const preset = TabataPreset(
+          id: 'x', name: 'p',
+          prepareSeconds: 3, workSeconds: 10, restSeconds: 10,
+          rounds: 1,
+        );
+
+        final emitted = <int>[];
+        engine.countdowns.listen(emitted.add);
+
+        engine.start(preset);
+        async.elapse(const Duration(seconds: 3));
+
+        expect(emitted, isEmpty,
+            reason: 'a 3-second phase should not say "3" at its very start');
+
+        engine.dispose();
+        async.flushMicrotasks();
+      });
+    });
+
+    test('emits across multiple phases', () {
+      fakeAsync((async) {
+        final engine = TimerEngine(clock: const SystemClock());
+        const preset = TabataPreset(
+          id: 'x', name: 'p',
+          prepareSeconds: 0, workSeconds: 5, restSeconds: 5,
+          rounds: 2,
+        );
+
+        final emitted = <int>[];
+        engine.countdowns.listen(emitted.add);
+
+        engine.start(preset);
+        async.elapse(const Duration(seconds: 20));
+
+        // 3 phases of 5s each (work, rest, work) → 3-2-1 fired thrice
+        expect(emitted, [3, 2, 1, 3, 2, 1, 3, 2, 1]);
+
+        engine.dispose();
+        async.flushMicrotasks();
+      });
     });
   });
 }

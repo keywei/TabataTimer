@@ -31,6 +31,7 @@ class WorkoutController extends Notifier<TimerSnapshot> {
   bool _historyRecorded = false;
 
   Stream<PhaseTransition> get transitions => _engine.transitions;
+  Stream<int> get countdowns => _engine.countdowns;
 
   @override
   TimerSnapshot build() {

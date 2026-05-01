@@ -23,6 +23,7 @@ class TimerPage extends ConsumerStatefulWidget {
 
 class _TimerPageState extends ConsumerState<TimerPage> {
   StreamSubscription<PhaseTransition>? _sub;
+  StreamSubscription<int>? _countdownSub;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _TimerPageState extends ConsumerState<TimerPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final ctrl = ref.read(workoutControllerProvider.notifier);
       _sub = ctrl.transitions.listen(_handleTransition);
+      _countdownSub = ctrl.countdowns.listen(_handleCountdown);
       await ctrl.start(widget.preset);
     });
   }
@@ -37,7 +39,17 @@ class _TimerPageState extends ConsumerState<TimerPage> {
   @override
   void dispose() {
     _sub?.cancel();
+    _countdownSub?.cancel();
     super.dispose();
+  }
+
+  void _handleCountdown(int n) {
+    if (!mounted) return;
+    final locale = Localizations.localeOf(context);
+    final tag = locale.countryCode == null || locale.countryCode!.isEmpty
+        ? locale.languageCode
+        : '${locale.languageCode}-${locale.countryCode}';
+    ref.read(ttsSpeakerProvider).say('$n', languageTag: tag);
   }
 
   Future<void> _handleTransition(PhaseTransition ev) async {

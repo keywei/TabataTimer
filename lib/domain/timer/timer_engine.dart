@@ -18,6 +18,7 @@ class TimerEngine {
 
   final _snapshots = StreamController<TimerSnapshot>.broadcast();
   final _transitions = StreamController<PhaseTransition>.broadcast();
+  final _countdowns = StreamController<int>.broadcast();
 
   TimerSnapshot _state = TimerSnapshot.idle();
   Timer? _ticker;
@@ -26,10 +27,16 @@ class TimerEngine {
   Duration _accumPaused = Duration.zero;
   DateTime? _pausedAt;
   int _baselineElapsedMs = 0;
+  int _lastCountdownSec = 0;
 
   TimerSnapshot get state => _state;
   Stream<TimerSnapshot> get snapshots => _snapshots.stream;
   Stream<PhaseTransition> get transitions => _transitions.stream;
+
+  /// Emits 3, 2, 1 as the current phase reaches the final three seconds.
+  /// Suppressed for phases shorter than 4 seconds (saying "3" the moment
+  /// the phase begins is noise, not a countdown).
+  Stream<int> get countdowns => _countdowns.stream;
 
   void start(TabataPreset preset) {
     _disposeTicker();
@@ -41,6 +48,7 @@ class TimerEngine {
     final durationMs = _durationForPhase(preset, initialPhase) * 1000;
     _phaseStart = _clock.now();
     _phaseDurationMs = durationMs;
+    _lastCountdownSec = (durationMs / 1000).ceil();
 
     _emitState(TimerSnapshot(
       preset: preset,
@@ -92,6 +100,7 @@ class TimerEngine {
     _disposeTicker();
     await _snapshots.close();
     await _transitions.close();
+    await _countdowns.close();
   }
 
   void _tick() {
@@ -108,6 +117,16 @@ class TimerEngine {
       phaseRemainingMs: remainingMs,
       totalElapsedMs: totalElapsed,
     ));
+
+    final cur = (remainingMs / 1000).ceil();
+    if (cur != _lastCountdownSec) {
+      // Only fire 3/2/1 if the phase is long enough that 3-2-1 is a real
+      // tail-end countdown — not the phase's opening seconds.
+      if (cur >= 1 && cur <= 3 && _phaseDurationMs >= 4000) {
+        _countdowns.add(cur);
+      }
+      _lastCountdownSec = cur;
+    }
 
     if (remainingMs <= 0) {
       _advance();
@@ -138,6 +157,7 @@ class TimerEngine {
     _phaseStart = _clock.now();
     _phaseDurationMs = newDurationMs;
     _accumPaused = Duration.zero;
+    _lastCountdownSec = (newDurationMs / 1000).ceil();
 
     _emitState(snap.copyWith(
       phase: next.phase,
