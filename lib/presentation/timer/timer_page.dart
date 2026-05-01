@@ -134,54 +134,63 @@ class _TimerPageState extends ConsumerState<TimerPage> {
         curve: Curves.easeOutCubic,
         builder: (context, animatedSurface, _) {
           final bg = animatedSurface ?? tintedSurface;
-          return Scaffold(
-            backgroundColor: bg,
-            appBar: AppBar(
-              backgroundColor: bg,
-              title: Text(preset.name),
-              leading: IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () async {
-                  final confirmed =
-                      snap.phase == TimerPhase.idle || snap.phase == TimerPhase.completed
-                          ? true
-                          : await _confirmStop(context, t);
-                  if (confirmed && mounted) {
-                    await ctrl.stop();
-                    if (context.mounted) context.pop();
-                  }
-                },
-              ),
-            ),
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(28, 8, 28, 32),
-                child: Column(
-                  children: [
-                    _SetRoundChips(
-                      set: snap.currentSet,
-                      totalSets: preset.sets,
-                      round: snap.currentRound,
-                      totalRounds: preset.rounds,
-                    ),
-                    const Spacer(),
-                    CircularCountdown(
-                      progress: snap.phaseProgress,
-                      color: color,
-                      label: _phaseLabel(snap.phase, t),
-                      bigText: '${snap.phaseRemainingSeconds}',
-                      subtitle: snap.phase == TimerPhase.completed
-                          ? t.doneLabel
-                          : t.totalLabel(_fmtMmSs(snap.totalElapsedMs ~/ 1000)),
-                    ),
-                    const Spacer(),
-                    const _TtsVolumeSlider(),
-                    const SizedBox(height: 16),
-                    _Controls(snap: snap, ctrl: ctrl),
-                  ],
+          return TweenAnimationBuilder<Color?>(
+            tween: ColorTween(end: color),
+            duration: const Duration(milliseconds: 450),
+            curve: Curves.easeOutCubic,
+            builder: (context, animatedAccent, _) {
+              final accent = animatedAccent ?? color;
+              return Scaffold(
+                backgroundColor: bg,
+                appBar: AppBar(
+                  backgroundColor: bg,
+                  title: Text(preset.name),
+                  leading: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () async {
+                      final confirmed =
+                          snap.phase == TimerPhase.idle || snap.phase == TimerPhase.completed
+                              ? true
+                              : await _confirmStop(context, t);
+                      if (confirmed && mounted) {
+                        await ctrl.stop();
+                        if (context.mounted) context.pop();
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ),
+                body: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(28, 8, 28, 32),
+                    child: Column(
+                      children: [
+                        _SetRoundChips(
+                          set: snap.currentSet,
+                          totalSets: preset.sets,
+                          round: snap.currentRound,
+                          totalRounds: preset.rounds,
+                          accent: accent,
+                        ),
+                        const Spacer(),
+                        CircularCountdown(
+                          progress: snap.phaseProgress,
+                          color: accent,
+                          label: _phaseLabel(snap.phase, t),
+                          bigText: '${snap.phaseRemainingSeconds}',
+                          subtitle: snap.phase == TimerPhase.completed
+                              ? t.doneLabel
+                              : t.totalLabel(_fmtMmSs(snap.totalElapsedMs ~/ 1000)),
+                        ),
+                        const Spacer(),
+                        const _TtsVolumeSlider(),
+                        const SizedBox(height: 16),
+                        _Controls(snap: snap, ctrl: ctrl),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
           );
         },
       ),
@@ -233,21 +242,42 @@ class _SetRoundChips extends StatelessWidget {
     required this.totalSets,
     required this.round,
     required this.totalRounds,
+    required this.accent,
   });
 
   final int set;
   final int totalSets;
   final int round;
   final int totalRounds;
+  final Color accent;
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
+    final labelStyle = Theme.of(context)
+        .chipTheme
+        .labelStyle
+        ?.copyWith(color: accent, fontWeight: FontWeight.w600);
+    final shape = RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(6),
+      side: BorderSide(color: accent.withValues(alpha: 0.6), width: 1),
+    );
     return Wrap(
       spacing: 8,
       children: [
-        if (totalSets > 1) Chip(label: Text(t.setRoundChip(set, totalSets))),
-        Chip(label: Text(t.roundChip(round, totalRounds))),
+        if (totalSets > 1)
+          Chip(
+            label: Text(t.setRoundChip(set, totalSets)),
+            labelStyle: labelStyle,
+            shape: shape,
+            side: BorderSide.none,
+          ),
+        Chip(
+          label: Text(t.roundChip(round, totalRounds)),
+          labelStyle: labelStyle,
+          shape: shape,
+          side: BorderSide.none,
+        ),
       ],
     );
   }
