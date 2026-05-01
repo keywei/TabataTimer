@@ -62,7 +62,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get fieldPrepare => '準備時間(秒)';
 
   @override
-  String get fieldWork => '工作時間(秒)';
+  String get fieldWork => '訓練時間(秒)';
 
   @override
   String get fieldRest => '休息時間(秒)';
@@ -93,14 +93,14 @@ class AppLocalizationsZh extends AppLocalizations {
       other: '$sets 組 · ',
       one: '',
     );
-    return '$_temp0$rounds 回合 · 工作 ${work}s / 休息 ${rest}s · 總時長 $duration';
+    return '$_temp0$rounds 回合 · 訓練 ${work}s / 休息 ${rest}s · 總時長 $duration';
   }
 
   @override
   String get phasePrepare => '準備';
 
   @override
-  String get phaseWork => '工作';
+  String get phaseWork => '訓練';
 
   @override
   String get phaseRest => '休息';
@@ -115,14 +115,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ttsGetReady => '準備開始';
 
   @override
-  String get ttsWork => '開始';
+  String get ttsWork => '訓練開始';
 
   @override
   String get ttsRest => '休息';
 
   @override
   String ttsRoundWork(int round) {
-    return '第 $round 回合,開始';
+    return '第 $round 回合,訓練開始';
   }
 
   @override
@@ -273,7 +273,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get fieldPrepare => '準備時間(秒)';
 
   @override
-  String get fieldWork => '工作時間(秒)';
+  String get fieldWork => '訓練時間(秒)';
 
   @override
   String get fieldRest => '休息時間(秒)';
@@ -304,14 +304,14 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
       other: '$sets 組 · ',
       one: '',
     );
-    return '$_temp0$rounds 回合 · 工作 ${work}s / 休息 ${rest}s · 總時長 $duration';
+    return '$_temp0$rounds 回合 · 訓練 ${work}s / 休息 ${rest}s · 總時長 $duration';
   }
 
   @override
   String get phasePrepare => '準備';
 
   @override
-  String get phaseWork => '工作';
+  String get phaseWork => '訓練';
 
   @override
   String get phaseRest => '休息';
@@ -326,14 +326,14 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get ttsGetReady => '準備開始';
 
   @override
-  String get ttsWork => '開始';
+  String get ttsWork => '訓練開始';
 
   @override
   String get ttsRest => '休息';
 
   @override
   String ttsRoundWork(int round) {
-    return '第 $round 回合,開始';
+    return '第 $round 回合,訓練開始';
   }
 
   @override
