@@ -124,34 +124,61 @@ class _Stepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final clamped = value.clamp(min, max);
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Column(
         children: [
-          Expanded(
-            child: Text(
-              label,
-              style: Theme.of(context).textTheme.bodyLarge,
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+              _StepBtn(
+                icon: Icons.remove,
+                onPressed: value > min ? () => onChanged(value - 1) : null,
+              ),
+              SizedBox(
+                width: 56,
+                child: Text(
+                  '$value',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+              ),
+              _StepBtn(
+                icon: Icons.add,
+                onPressed: value < max ? () => onChanged(value + 1) : null,
+              ),
+            ],
+          ),
+          SliderTheme(
+            data: SliderThemeData(
+              trackHeight: 2,
+              activeTrackColor: scheme.primary,
+              inactiveTrackColor: scheme.outline,
+              thumbColor: scheme.primary,
+              overlayColor: scheme.primary.withValues(alpha: 0.12),
+              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
+              overlayShape: const RoundSliderOverlayShape(overlayRadius: 18),
+              showValueIndicator: ShowValueIndicator.never,
+              tickMarkShape: SliderTickMarkShape.noTickMark,
             ),
-          ),
-          _StepBtn(
-            icon: Icons.remove,
-            onPressed: value > min ? () => onChanged(value - 1) : null,
-          ),
-          SizedBox(
-            width: 56,
-            child: Text(
-              '$value',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontFeatures: const [FontFeature.tabularFigures()],
-                    fontWeight: FontWeight.w500,
-                  ),
+            child: Slider(
+              value: clamped.toDouble(),
+              min: min.toDouble(),
+              max: max.toDouble(),
+              divisions: max - min,
+              onChanged: (v) => onChanged(v.round()),
             ),
-          ),
-          _StepBtn(
-            icon: Icons.add,
-            onPressed: value < max ? () => onChanged(value + 1) : null,
           ),
         ],
       ),
