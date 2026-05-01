@@ -10,6 +10,7 @@ import '../data/repositories/shared_prefs_preset_repository.dart';
 import '../data/repositories/shared_prefs_settings_repository.dart';
 import '../data/services/flutter_local_workout_notifier.dart';
 import '../data/services/flutter_tts_speaker.dart';
+import '../data/services/silent_loop_keepalive.dart';
 import '../data/services/system_audio_cue.dart';
 import '../data/services/vibration_haptics.dart';
 import '../data/services/wakelock_plus_lock.dart';
@@ -22,6 +23,7 @@ import '../domain/repositories/history_repository.dart';
 import '../domain/repositories/preset_repository.dart';
 import '../domain/repositories/settings_repository.dart';
 import '../domain/services/audio_cue.dart';
+import '../domain/services/background_keepalive.dart';
 import '../domain/services/haptics.dart';
 import '../domain/services/tts_speaker.dart';
 import '../domain/services/wake_lock.dart';
@@ -53,6 +55,12 @@ final settingsRepositoryProvider =
 final audioCueProvider = Provider<AudioCue>((_) => const SystemAudioCue());
 final hapticsProvider = Provider<Haptics>((_) => VibrationHaptics());
 final wakeLockProvider = Provider<WakeLock>((_) => const WakelockPlusLock());
+
+final backgroundKeepAliveProvider = Provider<BackgroundKeepAlive>((ref) {
+  final k = SilentLoopKeepAlive();
+  ref.onDispose(k.dispose);
+  return k;
+});
 
 final ttsSpeakerProvider = Provider<TtsSpeaker>((ref) {
   final s = FlutterTtsSpeaker();

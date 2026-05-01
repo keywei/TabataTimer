@@ -14,8 +14,17 @@ class FlutterTtsSpeaker implements TtsSpeaker {
 
   Future<void> _init() async {
     try {
+      await _tts.setSharedInstance(true);
+      await _tts.setIosAudioCategory(
+        IosTextToSpeechAudioCategory.playback,
+        [
+          IosTextToSpeechAudioCategoryOptions.mixWithOthers,
+          IosTextToSpeechAudioCategoryOptions.allowBluetooth,
+        ],
+        IosTextToSpeechAudioMode.spokenAudio,
+      );
       await _tts.setSpeechRate(0.55);
-      await _tts.setVolume(1.0);
+      await _tts.setVolume(0.5);
       await _tts.setPitch(1.0);
       _ready = true;
     } catch (_) {

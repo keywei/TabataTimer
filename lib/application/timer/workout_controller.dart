@@ -10,6 +10,7 @@ import '../../domain/entities/timer_phase.dart';
 import '../../domain/entities/timer_snapshot.dart';
 import '../../domain/entities/workout_history_entry.dart';
 import '../../domain/services/audio_cue.dart';
+import '../../domain/services/background_keepalive.dart';
 import '../../domain/services/haptics.dart';
 import '../../domain/services/wake_lock.dart';
 import '../../domain/timer/phase_transition.dart';
@@ -22,6 +23,7 @@ class WorkoutController extends Notifier<TimerSnapshot> {
   late AudioCue _audio;
   late Haptics _haptics;
   late WakeLock _wakeLock;
+  late BackgroundKeepAlive _keepAlive;
   late Clock _clock;
 
   StreamSubscription<TimerSnapshot>? _stateSub;
@@ -40,6 +42,7 @@ class WorkoutController extends Notifier<TimerSnapshot> {
     _audio = ref.watch(audioCueProvider);
     _haptics = ref.watch(hapticsProvider);
     _wakeLock = ref.watch(wakeLockProvider);
+    _keepAlive = ref.watch(backgroundKeepAliveProvider);
     _clock = ref.watch(clockProvider);
 
     _stateSub = _engine.snapshots.listen((s) => state = s);
@@ -49,6 +52,7 @@ class WorkoutController extends Notifier<TimerSnapshot> {
       await _stateSub?.cancel();
       await _transitionsSub?.cancel();
       await _wakeLock.disable();
+      await _keepAlive.disable();
     });
 
     return _engine.state;
@@ -59,6 +63,7 @@ class WorkoutController extends Notifier<TimerSnapshot> {
     _startedAt = _clock.now();
     _historyRecorded = false;
     await _wakeLock.enable();
+    await _keepAlive.enable();
     _engine.start(preset);
   }
 
@@ -69,6 +74,7 @@ class WorkoutController extends Notifier<TimerSnapshot> {
   Future<void> stop() async {
     _engine.stop();
     await _wakeLock.disable();
+    await _keepAlive.disable();
   }
 
   Future<void> _onTransition(PhaseTransition ev) async {
@@ -93,6 +99,7 @@ class WorkoutController extends Notifier<TimerSnapshot> {
         unawaited(_haptics.completed());
         await _recordHistory();
         await _wakeLock.disable();
+        await _keepAlive.disable();
         break;
       case TimerPhase.idle:
         break;

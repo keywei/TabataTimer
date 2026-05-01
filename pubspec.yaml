@@ -40,6 +40,7 @@ dependencies:
   json_annotation: ^4.11.0
   shared_preferences: ^2.5.5
   just_audio: ^0.10.5
+  audio_session: ^0.2.3
   flutter_tts: ^4.2.5
   vibration: ^3.1.8
   wakelock_plus: ^1.6.0
@@ -78,6 +79,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/audio/silence.wav
 
   # To add assets to your application, add an assets section, like this:
   # assets:
