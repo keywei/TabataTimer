@@ -315,6 +315,12 @@ abstract class AppLocalizations {
   /// **'Workout complete'**
   String get ttsWorkoutComplete;
 
+  /// No description provided for @ttsHalfway.
+  ///
+  /// In en, this message translates to:
+  /// **'Halfway'**
+  String get ttsHalfway;
+
   /// No description provided for @totalLabel.
   ///
   /// In en, this message translates to:

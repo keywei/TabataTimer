@@ -132,6 +132,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ttsWorkoutComplete => '訓練結束';
 
   @override
+  String get ttsHalfway => '過半';
+
+  @override
   String totalLabel(String time) {
     return '總計 $time';
   }
@@ -335,6 +338,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get ttsWorkoutComplete => '訓練結束';
+
+  @override
+  String get ttsHalfway => '過半';
 
   @override
   String totalLabel(String time) {

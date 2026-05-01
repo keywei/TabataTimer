@@ -132,6 +132,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ttsWorkoutComplete => 'Workout complete';
 
   @override
+  String get ttsHalfway => 'Halfway';
+
+  @override
   String totalLabel(String time) {
     return 'Total $time';
   }

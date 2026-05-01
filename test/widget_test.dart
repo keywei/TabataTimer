@@ -235,4 +235,95 @@ void main() {
       });
     });
   });
+
+  group('TimerEngine halfway stream', () {
+    test('fires once at the midpoint of a 20s work phase', () {
+      fakeAsync((async) {
+        final engine = TimerEngine(clock: const SystemClock());
+        const preset = TabataPreset(
+          id: 'x', name: 'p',
+          prepareSeconds: 0, workSeconds: 20, restSeconds: 10,
+          rounds: 1,
+        );
+
+        var count = 0;
+        engine.halfways.listen((_) => count++);
+
+        engine.start(preset);
+        async.elapse(const Duration(seconds: 20));
+
+        expect(count, 1);
+
+        engine.dispose();
+        async.flushMicrotasks();
+      });
+    });
+
+    test('does not fire when work duration is 8 seconds (would collide with 3-2-1)', () {
+      fakeAsync((async) {
+        final engine = TimerEngine(clock: const SystemClock());
+        const preset = TabataPreset(
+          id: 'x', name: 'p',
+          prepareSeconds: 0, workSeconds: 8, restSeconds: 10,
+          rounds: 1,
+        );
+
+        var count = 0;
+        engine.halfways.listen((_) => count++);
+
+        engine.start(preset);
+        async.elapse(const Duration(seconds: 8));
+
+        expect(count, 0,
+            reason: 'remaining at midpoint is exactly 4s; suppress so 3-2-1 keeps the floor');
+
+        engine.dispose();
+        async.flushMicrotasks();
+      });
+    });
+
+    test('does not fire during rest phases', () {
+      fakeAsync((async) {
+        final engine = TimerEngine(clock: const SystemClock());
+        const preset = TabataPreset(
+          id: 'x', name: 'p',
+          prepareSeconds: 0, workSeconds: 4, restSeconds: 30, rounds: 2,
+        );
+
+        var count = 0;
+        engine.halfways.listen((_) => count++);
+
+        engine.start(preset);
+        async.elapse(const Duration(minutes: 2));
+
+        // Both work phases are 4s (suppressed). The 30s rest in between has
+        // a midpoint, but rest phases don't fire halfway.
+        expect(count, 0);
+
+        engine.dispose();
+        async.flushMicrotasks();
+      });
+    });
+
+    test('fires once per work phase across multiple rounds', () {
+      fakeAsync((async) {
+        final engine = TimerEngine(clock: const SystemClock());
+        const preset = TabataPreset(
+          id: 'x', name: 'p',
+          prepareSeconds: 0, workSeconds: 20, restSeconds: 10, rounds: 3,
+        );
+
+        var count = 0;
+        engine.halfways.listen((_) => count++);
+
+        engine.start(preset);
+        async.elapse(const Duration(minutes: 3));
+
+        expect(count, 3, reason: 'one halfway per round');
+
+        engine.dispose();
+        async.flushMicrotasks();
+      });
+    });
+  });
 }

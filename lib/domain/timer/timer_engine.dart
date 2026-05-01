@@ -19,6 +19,7 @@ class TimerEngine {
   final _snapshots = StreamController<TimerSnapshot>.broadcast();
   final _transitions = StreamController<PhaseTransition>.broadcast();
   final _countdowns = StreamController<int>.broadcast();
+  final _halfways = StreamController<void>.broadcast();
 
   TimerSnapshot _state = TimerSnapshot.idle();
   Timer? _ticker;
@@ -28,6 +29,7 @@ class TimerEngine {
   DateTime? _pausedAt;
   int _baselineElapsedMs = 0;
   int _lastCountdownSec = 0;
+  bool _halfwayFired = false;
 
   TimerSnapshot get state => _state;
   Stream<TimerSnapshot> get snapshots => _snapshots.stream;
@@ -37,6 +39,13 @@ class TimerEngine {
   /// Suppressed for phases shorter than 4 seconds (saying "3" the moment
   /// the phase begins is noise, not a countdown).
   Stream<int> get countdowns => _countdowns.stream;
+
+  /// Emits once per work phase when the elapsed time crosses the midpoint.
+  /// Suppressed when remaining at midpoint is ≤ 4 seconds, so it never
+  /// collides with the 3-2-1 countdown (work phase must be > 8s).
+  /// Only fires for [TimerPhase.work] — rest / prepare / set break do not
+  /// produce halfway hints.
+  Stream<void> get halfways => _halfways.stream;
 
   void start(TabataPreset preset) {
     _disposeTicker();
@@ -49,6 +58,7 @@ class TimerEngine {
     _phaseStart = _clock.now();
     _phaseDurationMs = durationMs;
     _lastCountdownSec = (durationMs / 1000).ceil();
+    _halfwayFired = false;
 
     _emitState(TimerSnapshot(
       preset: preset,
@@ -101,6 +111,7 @@ class TimerEngine {
     await _snapshots.close();
     await _transitions.close();
     await _countdowns.close();
+    await _halfways.close();
   }
 
   void _tick() {
@@ -126,6 +137,16 @@ class TimerEngine {
         _countdowns.add(cur);
       }
       _lastCountdownSec = cur;
+    }
+
+    // Halfway: only for work phases, only once per phase, and only if there
+    // are still > 4s remaining so it never collides with the 3-2-1 countdown.
+    if (!_halfwayFired &&
+        snap.phase == TimerPhase.work &&
+        elapsed.inMilliseconds * 2 >= _phaseDurationMs &&
+        remainingMs > 4000) {
+      _halfways.add(null);
+      _halfwayFired = true;
     }
 
     if (remainingMs <= 0) {
@@ -158,6 +179,7 @@ class TimerEngine {
     _phaseDurationMs = newDurationMs;
     _accumPaused = Duration.zero;
     _lastCountdownSec = (newDurationMs / 1000).ceil();
+    _halfwayFired = false;
 
     _emitState(snap.copyWith(
       phase: next.phase,

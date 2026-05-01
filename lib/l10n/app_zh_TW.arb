@@ -42,6 +42,7 @@
   "ttsRoundWork": "第 {round} 回合,開始",
   "ttsSetComplete": "本組完成",
   "ttsWorkoutComplete": "訓練結束",
+  "ttsHalfway": "過半",
 
   "totalLabel": "總計 {time}",
   "doneLabel": "完成!",

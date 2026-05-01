@@ -57,6 +57,7 @@
   },
   "ttsSetComplete": "Set complete",
   "ttsWorkoutComplete": "Workout complete",
+  "ttsHalfway": "Halfway",
 
   "totalLabel": "Total {time}",
   "@totalLabel": { "placeholders": { "time": { "type": "String" } } },

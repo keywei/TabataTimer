@@ -32,6 +32,7 @@ class WorkoutController extends Notifier<TimerSnapshot> {
 
   Stream<PhaseTransition> get transitions => _engine.transitions;
   Stream<int> get countdowns => _engine.countdowns;
+  Stream<void> get halfways => _engine.halfways;
 
   @override
   TimerSnapshot build() {

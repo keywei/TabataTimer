@@ -24,6 +24,7 @@ class TimerPage extends ConsumerStatefulWidget {
 class _TimerPageState extends ConsumerState<TimerPage> {
   StreamSubscription<PhaseTransition>? _sub;
   StreamSubscription<int>? _countdownSub;
+  StreamSubscription<void>? _halfwaySub;
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _TimerPageState extends ConsumerState<TimerPage> {
       final ctrl = ref.read(workoutControllerProvider.notifier);
       _sub = ctrl.transitions.listen(_handleTransition);
       _countdownSub = ctrl.countdowns.listen(_handleCountdown);
+      _halfwaySub = ctrl.halfways.listen((_) => _handleHalfway());
       await ctrl.start(widget.preset);
     });
   }
@@ -40,16 +42,27 @@ class _TimerPageState extends ConsumerState<TimerPage> {
   void dispose() {
     _sub?.cancel();
     _countdownSub?.cancel();
+    _halfwaySub?.cancel();
     super.dispose();
+  }
+
+  String _localeTag() {
+    final locale = Localizations.localeOf(context);
+    return locale.countryCode == null || locale.countryCode!.isEmpty
+        ? locale.languageCode
+        : '${locale.languageCode}-${locale.countryCode}';
   }
 
   void _handleCountdown(int n) {
     if (!mounted) return;
-    final locale = Localizations.localeOf(context);
-    final tag = locale.countryCode == null || locale.countryCode!.isEmpty
-        ? locale.languageCode
-        : '${locale.languageCode}-${locale.countryCode}';
-    ref.read(ttsSpeakerProvider).say('$n', languageTag: tag);
+    ref.read(ttsSpeakerProvider).say('$n', languageTag: _localeTag());
+  }
+
+  void _handleHalfway() {
+    if (!mounted) return;
+    ref
+        .read(ttsSpeakerProvider)
+        .say(AppLocalizations.of(context).ttsHalfway, languageTag: _localeTag());
   }
 
   Future<void> _handleTransition(PhaseTransition ev) async {
