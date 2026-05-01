@@ -10,6 +10,7 @@ import '../../domain/entities/timer_phase.dart';
 import '../../domain/entities/timer_snapshot.dart';
 import '../../domain/timer/phase_transition.dart';
 import '../../l10n/app_localizations.dart';
+import '../theme/phase_colors.dart';
 import 'widgets/circular_countdown.dart';
 
 class TimerPage extends ConsumerStatefulWidget {
@@ -110,7 +111,7 @@ class _TimerPageState extends ConsumerState<TimerPage> {
     final ctrl = ref.read(workoutControllerProvider.notifier);
     final scheme = Theme.of(context).colorScheme;
 
-    final color = _phaseColor(snap.phase, scheme);
+    final color = PhaseColors.of(snap.phase, scheme).foreground;
     final preset = snap.preset ?? widget.preset;
 
     return PopScope(
@@ -187,23 +188,6 @@ class _TimerPageState extends ConsumerState<TimerPage> {
       ),
     );
     return result ?? false;
-  }
-
-  Color _phaseColor(TimerPhase phase, ColorScheme scheme) {
-    switch (phase) {
-      case TimerPhase.prepare:
-        return const Color(0xFFD4A017);
-      case TimerPhase.work:
-        return const Color(0xFFE85D04);
-      case TimerPhase.rest:
-        return const Color(0xFF1F8A4C);
-      case TimerPhase.restBetweenSets:
-        return const Color(0xFF2860C4);
-      case TimerPhase.completed:
-        return scheme.primary;
-      case TimerPhase.idle:
-        return scheme.onSurfaceVariant;
-    }
   }
 
   String _phaseLabel(TimerPhase phase, AppLocalizations t) {
