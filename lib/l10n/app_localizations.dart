@@ -345,6 +345,12 @@ abstract class AppLocalizations {
   /// **'Round {round} / {totalRounds}'**
   String roundChip(int round, int totalRounds);
 
+  /// No description provided for @voiceVolumeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice volume'**
+  String get voiceVolumeLabel;
+
   /// No description provided for @stopWorkoutTitle.
   ///
   /// In en, this message translates to:

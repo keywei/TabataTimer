@@ -50,6 +50,8 @@
   "setRoundChip": "第 {set} / {totalSets} 組",
   "roundChip": "第 {round} / {totalRounds} 回合",
 
+  "voiceVolumeLabel": "語音音量",
+
   "stopWorkoutTitle": "停止訓練?",
   "stopWorkoutBody": "進度將會遺失。",
 

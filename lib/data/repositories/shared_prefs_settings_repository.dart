@@ -5,6 +5,7 @@ import '../../domain/repositories/settings_repository.dart';
 
 const _kThemeModeKey = 'theme_mode_v1';
 const _kLocaleKey = 'locale_v1';
+const _kTtsVolumeKey = 'tts_volume_v1';
 
 class SharedPrefsSettingsRepository implements SettingsRepository {
   SharedPrefsSettingsRepository(this._prefs);
@@ -15,9 +16,11 @@ class SharedPrefsSettingsRepository implements SettingsRepository {
   Future<AppSettings> load() async {
     final themeRaw = _prefs.getString(_kThemeModeKey);
     final localeRaw = _prefs.getString(_kLocaleKey);
+    final volumeRaw = _prefs.getDouble(_kTtsVolumeKey);
     return AppSettings(
       themeMode: _parseThemeMode(themeRaw),
       localeTag: localeRaw,
+      ttsVolume: volumeRaw ?? 0.5,
     );
   }
 
@@ -29,6 +32,7 @@ class SharedPrefsSettingsRepository implements SettingsRepository {
     } else {
       await _prefs.setString(_kLocaleKey, settings.localeTag!);
     }
+    await _prefs.setDouble(_kTtsVolumeKey, settings.ttsVolume);
   }
 
   AppThemeMode _parseThemeMode(String? raw) {

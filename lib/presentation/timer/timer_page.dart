@@ -34,6 +34,8 @@ class _TimerPageState extends ConsumerState<TimerPage> {
       _sub = ctrl.transitions.listen(_handleTransition);
       _countdownSub = ctrl.countdowns.listen(_handleCountdown);
       _halfwaySub = ctrl.halfways.listen((_) => _handleHalfway());
+      final settings = await ref.read(settingsControllerProvider.future);
+      await ref.read(ttsSpeakerProvider).setVolume(settings.ttsVolume);
       await ctrl.start(widget.preset);
     });
   }
@@ -161,6 +163,8 @@ class _TimerPageState extends ConsumerState<TimerPage> {
                       : t.totalLabel(_fmtMmSs(snap.totalElapsedMs ~/ 1000)),
                 ),
                 const Spacer(),
+                const _TtsVolumeSlider(),
+                const SizedBox(height: 16),
                 _Controls(snap: snap, ctrl: ctrl),
               ],
             ),
@@ -298,6 +302,46 @@ class _Controls extends ConsumerWidget {
             if (context.mounted) Navigator.of(context).pop();
           },
         ),
+      ],
+    );
+  }
+}
+
+class _TtsVolumeSlider extends ConsumerWidget {
+  const _TtsVolumeSlider();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final volume = ref.watch(
+      settingsControllerProvider.select(
+        (s) => s.value?.ttsVolume ?? 0.5,
+      ),
+    );
+    return Row(
+      children: [
+        Icon(Icons.volume_down, size: 20, color: scheme.onSurfaceVariant),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Slider(
+            value: volume.clamp(0.0, 1.0),
+            min: 0.0,
+            max: 1.0,
+            label: '${(volume * 100).round()}%',
+            divisions: 20,
+            onChanged: (v) async {
+              await ref.read(ttsSpeakerProvider).setVolume(v);
+              await ref
+                  .read(settingsControllerProvider.notifier)
+                  .setTtsVolume(v);
+            },
+            semanticFormatterCallback: (v) =>
+                '${t.voiceVolumeLabel} ${(v * 100).round()}%',
+          ),
+        ),
+        const SizedBox(width: 8),
+        Icon(Icons.volume_up, size: 20, color: scheme.onSurfaceVariant),
       ],
     );
   }

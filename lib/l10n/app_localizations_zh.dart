@@ -153,6 +153,9 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get voiceVolumeLabel => '語音音量';
+
+  @override
   String get stopWorkoutTitle => '停止訓練?';
 
   @override
@@ -359,6 +362,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String roundChip(int round, int totalRounds) {
     return '第 $round / $totalRounds 回合';
   }
+
+  @override
+  String get voiceVolumeLabel => '語音音量';
 
   @override
   String get stopWorkoutTitle => '停止訓練?';

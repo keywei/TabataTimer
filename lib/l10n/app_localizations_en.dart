@@ -153,6 +153,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get voiceVolumeLabel => 'Voice volume';
+
+  @override
   String get stopWorkoutTitle => 'Stop workout?';
 
   @override

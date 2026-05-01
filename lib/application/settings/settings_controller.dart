@@ -26,4 +26,12 @@ class SettingsController extends AsyncNotifier<AppSettings> {
     await _repository.save(updated);
     state = AsyncData(updated);
   }
+
+  Future<void> setTtsVolume(double volume) async {
+    final current = state.value ?? const AppSettings();
+    final clamped = volume.clamp(0.0, 1.0);
+    final updated = current.copyWith(ttsVolume: clamped);
+    await _repository.save(updated);
+    state = AsyncData(updated);
+  }
 }

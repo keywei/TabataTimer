@@ -72,6 +72,8 @@
     "placeholders": { "round": { "type": "int" }, "totalRounds": { "type": "int" } }
   },
 
+  "voiceVolumeLabel": "Voice volume",
+
   "stopWorkoutTitle": "Stop workout?",
   "stopWorkoutBody": "Your progress will be lost.",
 

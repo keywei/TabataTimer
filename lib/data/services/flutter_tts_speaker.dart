@@ -3,7 +3,8 @@ import 'package:flutter_tts/flutter_tts.dart';
 import '../../domain/services/tts_speaker.dart';
 
 class FlutterTtsSpeaker implements TtsSpeaker {
-  FlutterTtsSpeaker() {
+  FlutterTtsSpeaker({double initialVolume = 0.5})
+      : _volume = initialVolume.clamp(0.0, 1.0) {
     _tts = FlutterTts();
     _init();
   }
@@ -11,6 +12,7 @@ class FlutterTtsSpeaker implements TtsSpeaker {
   late final FlutterTts _tts;
   bool _ready = false;
   String? _currentLang;
+  double _volume;
 
   Future<void> _init() async {
     try {
@@ -24,7 +26,7 @@ class FlutterTtsSpeaker implements TtsSpeaker {
         IosTextToSpeechAudioMode.spokenAudio,
       );
       await _tts.setSpeechRate(0.55);
-      await _tts.setVolume(0.5);
+      await _tts.setVolume(_volume);
       await _tts.setPitch(1.0);
       _ready = true;
     } catch (_) {
@@ -47,6 +49,14 @@ class FlutterTtsSpeaker implements TtsSpeaker {
       await _ensureLanguage(languageTag);
       await _tts.stop();
       await _tts.speak(message);
+    } catch (_) {}
+  }
+
+  @override
+  Future<void> setVolume(double volume) async {
+    _volume = volume.clamp(0.0, 1.0);
+    try {
+      await _tts.setVolume(_volume);
     } catch (_) {}
   }
 
