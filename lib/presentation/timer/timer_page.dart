@@ -111,7 +111,10 @@ class _TimerPageState extends ConsumerState<TimerPage> {
     final ctrl = ref.read(workoutControllerProvider.notifier);
     final scheme = Theme.of(context).colorScheme;
 
-    final color = PhaseColors.of(snap.phase, scheme).foreground;
+    final phaseColors = PhaseColors.of(snap.phase, scheme);
+    final color = phaseColors.foreground;
+    final tintedSurface =
+        Color.alphaBlend(phaseColors.container, scheme.surface);
     final preset = snap.preset ?? widget.preset;
 
     return PopScope(
@@ -125,52 +128,62 @@ class _TimerPageState extends ConsumerState<TimerPage> {
           }
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(preset.name),
-          leading: IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () async {
-              final confirmed =
-                  snap.phase == TimerPhase.idle || snap.phase == TimerPhase.completed
-                      ? true
-                      : await _confirmStop(context, t);
-              if (confirmed && mounted) {
-                await ctrl.stop();
-                if (context.mounted) context.pop();
-              }
-            },
-          ),
-        ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(28, 8, 28, 32),
-            child: Column(
-              children: [
-                _SetRoundChips(
-                  set: snap.currentSet,
-                  totalSets: preset.sets,
-                  round: snap.currentRound,
-                  totalRounds: preset.rounds,
-                ),
-                const Spacer(),
-                CircularCountdown(
-                  progress: snap.phaseProgress,
-                  color: color,
-                  label: _phaseLabel(snap.phase, t),
-                  bigText: '${snap.phaseRemainingSeconds}',
-                  subtitle: snap.phase == TimerPhase.completed
-                      ? t.doneLabel
-                      : t.totalLabel(_fmtMmSs(snap.totalElapsedMs ~/ 1000)),
-                ),
-                const Spacer(),
-                const _TtsVolumeSlider(),
-                const SizedBox(height: 16),
-                _Controls(snap: snap, ctrl: ctrl),
-              ],
+      child: TweenAnimationBuilder<Color?>(
+        tween: ColorTween(end: tintedSurface),
+        duration: const Duration(milliseconds: 450),
+        curve: Curves.easeOutCubic,
+        builder: (context, animatedSurface, _) {
+          final bg = animatedSurface ?? tintedSurface;
+          return Scaffold(
+            backgroundColor: bg,
+            appBar: AppBar(
+              backgroundColor: bg,
+              title: Text(preset.name),
+              leading: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () async {
+                  final confirmed =
+                      snap.phase == TimerPhase.idle || snap.phase == TimerPhase.completed
+                          ? true
+                          : await _confirmStop(context, t);
+                  if (confirmed && mounted) {
+                    await ctrl.stop();
+                    if (context.mounted) context.pop();
+                  }
+                },
+              ),
             ),
-          ),
-        ),
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(28, 8, 28, 32),
+                child: Column(
+                  children: [
+                    _SetRoundChips(
+                      set: snap.currentSet,
+                      totalSets: preset.sets,
+                      round: snap.currentRound,
+                      totalRounds: preset.rounds,
+                    ),
+                    const Spacer(),
+                    CircularCountdown(
+                      progress: snap.phaseProgress,
+                      color: color,
+                      label: _phaseLabel(snap.phase, t),
+                      bigText: '${snap.phaseRemainingSeconds}',
+                      subtitle: snap.phase == TimerPhase.completed
+                          ? t.doneLabel
+                          : t.totalLabel(_fmtMmSs(snap.totalElapsedMs ~/ 1000)),
+                    ),
+                    const Spacer(),
+                    const _TtsVolumeSlider(),
+                    const SizedBox(height: 16),
+                    _Controls(snap: snap, ctrl: ctrl),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
