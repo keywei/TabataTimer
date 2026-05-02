@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../domain/entities/slideshow_mode.dart';
 import '../../domain/entities/tabata_preset.dart';
+import 'workout_image_dto.dart';
 
 part 'tabata_preset_dto.freezed.dart';
 part 'tabata_preset_dto.g.dart';
@@ -16,6 +18,9 @@ abstract class TabataPresetDto with _$TabataPresetDto {
     @Default(8) int rounds,
     @Default(1) int sets,
     @Default(60) int restBetweenSetsSeconds,
+    @Default(<WorkoutImageDto>[]) List<WorkoutImageDto> images,
+    @Default(SlideshowMode.off) SlideshowMode slideshowMode,
+    @Default(5) int slideshowIntervalSeconds,
   }) = _TabataPresetDto;
 
   factory TabataPresetDto.fromJson(Map<String, dynamic> json) =>
@@ -32,6 +37,9 @@ extension TabataPresetDtoX on TabataPresetDto {
         rounds: rounds,
         sets: sets,
         restBetweenSetsSeconds: restBetweenSetsSeconds,
+        images: images.map((d) => d.toEntity()).toList(),
+        slideshowMode: slideshowMode,
+        slideshowIntervalSeconds: slideshowIntervalSeconds,
       );
 }
 
@@ -45,5 +53,8 @@ extension TabataPresetMapper on TabataPreset {
         rounds: rounds,
         sets: sets,
         restBetweenSetsSeconds: restBetweenSetsSeconds,
+        images: images.map((i) => i.toDto()).toList(),
+        slideshowMode: slideshowMode,
+        slideshowIntervalSeconds: slideshowIntervalSeconds,
       );
 }

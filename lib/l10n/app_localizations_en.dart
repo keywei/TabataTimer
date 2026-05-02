@@ -80,6 +80,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get untitled => 'Untitled';
 
   @override
+  String get imagesSection => 'Images';
+
+  @override
+  String get imagesAdd => 'Add image';
+
+  @override
+  String imagesLimitReached(int max) {
+    return 'Maximum $max images';
+  }
+
+  @override
+  String get imagesEnable => 'Use';
+
+  @override
+  String get imagesReplace => 'Replace';
+
+  @override
+  String get imagesDelete => 'Delete';
+
+  @override
+  String get imagesEmpty =>
+      'No images yet. Add up to 10 to display during workouts.';
+
+  @override
+  String get imageDeleteConfirm => 'Delete this image?';
+
+  @override
+  String get slideshowSection => 'Slideshow';
+
+  @override
+  String get slideshowModeOff => 'Off';
+
+  @override
+  String get slideshowModeSequential => 'Sequential';
+
+  @override
+  String get slideshowModeRandom => 'Random';
+
+  @override
+  String get slideshowInterval => 'Interval (seconds)';
+
+  @override
   String presetSummary(
     int sets,
     int rounds,

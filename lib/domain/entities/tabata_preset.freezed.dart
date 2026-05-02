@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TabataPreset {
 
- String get id; String get name; int get prepareSeconds; int get workSeconds; int get restSeconds; int get rounds; int get sets; int get restBetweenSetsSeconds;
+ String get id; String get name; int get prepareSeconds; int get workSeconds; int get restSeconds; int get rounds; int get sets; int get restBetweenSetsSeconds; List<WorkoutImage> get images; SlideshowMode get slideshowMode; int get slideshowIntervalSeconds;
 /// Create a copy of TabataPreset
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TabataPresetCopyWith<TabataPreset> get copyWith => _$TabataPresetCopyWithImpl<T
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TabataPreset&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.prepareSeconds, prepareSeconds) || other.prepareSeconds == prepareSeconds)&&(identical(other.workSeconds, workSeconds) || other.workSeconds == workSeconds)&&(identical(other.restSeconds, restSeconds) || other.restSeconds == restSeconds)&&(identical(other.rounds, rounds) || other.rounds == rounds)&&(identical(other.sets, sets) || other.sets == sets)&&(identical(other.restBetweenSetsSeconds, restBetweenSetsSeconds) || other.restBetweenSetsSeconds == restBetweenSetsSeconds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TabataPreset&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.prepareSeconds, prepareSeconds) || other.prepareSeconds == prepareSeconds)&&(identical(other.workSeconds, workSeconds) || other.workSeconds == workSeconds)&&(identical(other.restSeconds, restSeconds) || other.restSeconds == restSeconds)&&(identical(other.rounds, rounds) || other.rounds == rounds)&&(identical(other.sets, sets) || other.sets == sets)&&(identical(other.restBetweenSetsSeconds, restBetweenSetsSeconds) || other.restBetweenSetsSeconds == restBetweenSetsSeconds)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.slideshowMode, slideshowMode) || other.slideshowMode == slideshowMode)&&(identical(other.slideshowIntervalSeconds, slideshowIntervalSeconds) || other.slideshowIntervalSeconds == slideshowIntervalSeconds));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,prepareSeconds,workSeconds,restSeconds,rounds,sets,restBetweenSetsSeconds);
+int get hashCode => Object.hash(runtimeType,id,name,prepareSeconds,workSeconds,restSeconds,rounds,sets,restBetweenSetsSeconds,const DeepCollectionEquality().hash(images),slideshowMode,slideshowIntervalSeconds);
 
 @override
 String toString() {
-  return 'TabataPreset(id: $id, name: $name, prepareSeconds: $prepareSeconds, workSeconds: $workSeconds, restSeconds: $restSeconds, rounds: $rounds, sets: $sets, restBetweenSetsSeconds: $restBetweenSetsSeconds)';
+  return 'TabataPreset(id: $id, name: $name, prepareSeconds: $prepareSeconds, workSeconds: $workSeconds, restSeconds: $restSeconds, rounds: $rounds, sets: $sets, restBetweenSetsSeconds: $restBetweenSetsSeconds, images: $images, slideshowMode: $slideshowMode, slideshowIntervalSeconds: $slideshowIntervalSeconds)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TabataPresetCopyWith<$Res>  {
   factory $TabataPresetCopyWith(TabataPreset value, $Res Function(TabataPreset) _then) = _$TabataPresetCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, int prepareSeconds, int workSeconds, int restSeconds, int rounds, int sets, int restBetweenSetsSeconds
+ String id, String name, int prepareSeconds, int workSeconds, int restSeconds, int rounds, int sets, int restBetweenSetsSeconds, List<WorkoutImage> images, SlideshowMode slideshowMode, int slideshowIntervalSeconds
 });
 
 
@@ -62,7 +62,7 @@ class _$TabataPresetCopyWithImpl<$Res>
 
 /// Create a copy of TabataPreset
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? prepareSeconds = null,Object? workSeconds = null,Object? restSeconds = null,Object? rounds = null,Object? sets = null,Object? restBetweenSetsSeconds = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? prepareSeconds = null,Object? workSeconds = null,Object? restSeconds = null,Object? rounds = null,Object? sets = null,Object? restBetweenSetsSeconds = null,Object? images = null,Object? slideshowMode = null,Object? slideshowIntervalSeconds = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -72,6 +72,9 @@ as int,restSeconds: null == restSeconds ? _self.restSeconds : restSeconds // ign
 as int,rounds: null == rounds ? _self.rounds : rounds // ignore: cast_nullable_to_non_nullable
 as int,sets: null == sets ? _self.sets : sets // ignore: cast_nullable_to_non_nullable
 as int,restBetweenSetsSeconds: null == restBetweenSetsSeconds ? _self.restBetweenSetsSeconds : restBetweenSetsSeconds // ignore: cast_nullable_to_non_nullable
+as int,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
+as List<WorkoutImage>,slideshowMode: null == slideshowMode ? _self.slideshowMode : slideshowMode // ignore: cast_nullable_to_non_nullable
+as SlideshowMode,slideshowIntervalSeconds: null == slideshowIntervalSeconds ? _self.slideshowIntervalSeconds : slideshowIntervalSeconds // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }
@@ -157,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  int prepareSeconds,  int workSeconds,  int restSeconds,  int rounds,  int sets,  int restBetweenSetsSeconds)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  int prepareSeconds,  int workSeconds,  int restSeconds,  int rounds,  int sets,  int restBetweenSetsSeconds,  List<WorkoutImage> images,  SlideshowMode slideshowMode,  int slideshowIntervalSeconds)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TabataPreset() when $default != null:
-return $default(_that.id,_that.name,_that.prepareSeconds,_that.workSeconds,_that.restSeconds,_that.rounds,_that.sets,_that.restBetweenSetsSeconds);case _:
+return $default(_that.id,_that.name,_that.prepareSeconds,_that.workSeconds,_that.restSeconds,_that.rounds,_that.sets,_that.restBetweenSetsSeconds,_that.images,_that.slideshowMode,_that.slideshowIntervalSeconds);case _:
   return orElse();
 
 }
@@ -178,10 +181,10 @@ return $default(_that.id,_that.name,_that.prepareSeconds,_that.workSeconds,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  int prepareSeconds,  int workSeconds,  int restSeconds,  int rounds,  int sets,  int restBetweenSetsSeconds)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  int prepareSeconds,  int workSeconds,  int restSeconds,  int rounds,  int sets,  int restBetweenSetsSeconds,  List<WorkoutImage> images,  SlideshowMode slideshowMode,  int slideshowIntervalSeconds)  $default,) {final _that = this;
 switch (_that) {
 case _TabataPreset():
-return $default(_that.id,_that.name,_that.prepareSeconds,_that.workSeconds,_that.restSeconds,_that.rounds,_that.sets,_that.restBetweenSetsSeconds);case _:
+return $default(_that.id,_that.name,_that.prepareSeconds,_that.workSeconds,_that.restSeconds,_that.rounds,_that.sets,_that.restBetweenSetsSeconds,_that.images,_that.slideshowMode,_that.slideshowIntervalSeconds);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +201,10 @@ return $default(_that.id,_that.name,_that.prepareSeconds,_that.workSeconds,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  int prepareSeconds,  int workSeconds,  int restSeconds,  int rounds,  int sets,  int restBetweenSetsSeconds)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  int prepareSeconds,  int workSeconds,  int restSeconds,  int rounds,  int sets,  int restBetweenSetsSeconds,  List<WorkoutImage> images,  SlideshowMode slideshowMode,  int slideshowIntervalSeconds)?  $default,) {final _that = this;
 switch (_that) {
 case _TabataPreset() when $default != null:
-return $default(_that.id,_that.name,_that.prepareSeconds,_that.workSeconds,_that.restSeconds,_that.rounds,_that.sets,_that.restBetweenSetsSeconds);case _:
+return $default(_that.id,_that.name,_that.prepareSeconds,_that.workSeconds,_that.restSeconds,_that.rounds,_that.sets,_that.restBetweenSetsSeconds,_that.images,_that.slideshowMode,_that.slideshowIntervalSeconds);case _:
   return null;
 
 }
@@ -213,7 +216,7 @@ return $default(_that.id,_that.name,_that.prepareSeconds,_that.workSeconds,_that
 
 
 class _TabataPreset extends TabataPreset {
-  const _TabataPreset({required this.id, required this.name, this.prepareSeconds = 10, this.workSeconds = 20, this.restSeconds = 10, this.rounds = 8, this.sets = 1, this.restBetweenSetsSeconds = 60}): super._();
+  const _TabataPreset({required this.id, required this.name, this.prepareSeconds = 10, this.workSeconds = 20, this.restSeconds = 10, this.rounds = 8, this.sets = 1, this.restBetweenSetsSeconds = 60, final  List<WorkoutImage> images = const <WorkoutImage>[], this.slideshowMode = SlideshowMode.off, this.slideshowIntervalSeconds = 5}): _images = images,super._();
   
 
 @override final  String id;
@@ -224,6 +227,15 @@ class _TabataPreset extends TabataPreset {
 @override@JsonKey() final  int rounds;
 @override@JsonKey() final  int sets;
 @override@JsonKey() final  int restBetweenSetsSeconds;
+ final  List<WorkoutImage> _images;
+@override@JsonKey() List<WorkoutImage> get images {
+  if (_images is EqualUnmodifiableListView) return _images;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_images);
+}
+
+@override@JsonKey() final  SlideshowMode slideshowMode;
+@override@JsonKey() final  int slideshowIntervalSeconds;
 
 /// Create a copy of TabataPreset
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +247,16 @@ _$TabataPresetCopyWith<_TabataPreset> get copyWith => __$TabataPresetCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TabataPreset&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.prepareSeconds, prepareSeconds) || other.prepareSeconds == prepareSeconds)&&(identical(other.workSeconds, workSeconds) || other.workSeconds == workSeconds)&&(identical(other.restSeconds, restSeconds) || other.restSeconds == restSeconds)&&(identical(other.rounds, rounds) || other.rounds == rounds)&&(identical(other.sets, sets) || other.sets == sets)&&(identical(other.restBetweenSetsSeconds, restBetweenSetsSeconds) || other.restBetweenSetsSeconds == restBetweenSetsSeconds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TabataPreset&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.prepareSeconds, prepareSeconds) || other.prepareSeconds == prepareSeconds)&&(identical(other.workSeconds, workSeconds) || other.workSeconds == workSeconds)&&(identical(other.restSeconds, restSeconds) || other.restSeconds == restSeconds)&&(identical(other.rounds, rounds) || other.rounds == rounds)&&(identical(other.sets, sets) || other.sets == sets)&&(identical(other.restBetweenSetsSeconds, restBetweenSetsSeconds) || other.restBetweenSetsSeconds == restBetweenSetsSeconds)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.slideshowMode, slideshowMode) || other.slideshowMode == slideshowMode)&&(identical(other.slideshowIntervalSeconds, slideshowIntervalSeconds) || other.slideshowIntervalSeconds == slideshowIntervalSeconds));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,prepareSeconds,workSeconds,restSeconds,rounds,sets,restBetweenSetsSeconds);
+int get hashCode => Object.hash(runtimeType,id,name,prepareSeconds,workSeconds,restSeconds,rounds,sets,restBetweenSetsSeconds,const DeepCollectionEquality().hash(_images),slideshowMode,slideshowIntervalSeconds);
 
 @override
 String toString() {
-  return 'TabataPreset(id: $id, name: $name, prepareSeconds: $prepareSeconds, workSeconds: $workSeconds, restSeconds: $restSeconds, rounds: $rounds, sets: $sets, restBetweenSetsSeconds: $restBetweenSetsSeconds)';
+  return 'TabataPreset(id: $id, name: $name, prepareSeconds: $prepareSeconds, workSeconds: $workSeconds, restSeconds: $restSeconds, rounds: $rounds, sets: $sets, restBetweenSetsSeconds: $restBetweenSetsSeconds, images: $images, slideshowMode: $slideshowMode, slideshowIntervalSeconds: $slideshowIntervalSeconds)';
 }
 
 
@@ -255,7 +267,7 @@ abstract mixin class _$TabataPresetCopyWith<$Res> implements $TabataPresetCopyWi
   factory _$TabataPresetCopyWith(_TabataPreset value, $Res Function(_TabataPreset) _then) = __$TabataPresetCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, int prepareSeconds, int workSeconds, int restSeconds, int rounds, int sets, int restBetweenSetsSeconds
+ String id, String name, int prepareSeconds, int workSeconds, int restSeconds, int rounds, int sets, int restBetweenSetsSeconds, List<WorkoutImage> images, SlideshowMode slideshowMode, int slideshowIntervalSeconds
 });
 
 
@@ -272,7 +284,7 @@ class __$TabataPresetCopyWithImpl<$Res>
 
 /// Create a copy of TabataPreset
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? prepareSeconds = null,Object? workSeconds = null,Object? restSeconds = null,Object? rounds = null,Object? sets = null,Object? restBetweenSetsSeconds = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? prepareSeconds = null,Object? workSeconds = null,Object? restSeconds = null,Object? rounds = null,Object? sets = null,Object? restBetweenSetsSeconds = null,Object? images = null,Object? slideshowMode = null,Object? slideshowIntervalSeconds = null,}) {
   return _then(_TabataPreset(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -282,6 +294,9 @@ as int,restSeconds: null == restSeconds ? _self.restSeconds : restSeconds // ign
 as int,rounds: null == rounds ? _self.rounds : rounds // ignore: cast_nullable_to_non_nullable
 as int,sets: null == sets ? _self.sets : sets // ignore: cast_nullable_to_non_nullable
 as int,restBetweenSetsSeconds: null == restBetweenSetsSeconds ? _self.restBetweenSetsSeconds : restBetweenSetsSeconds // ignore: cast_nullable_to_non_nullable
+as int,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
+as List<WorkoutImage>,slideshowMode: null == slideshowMode ? _self.slideshowMode : slideshowMode // ignore: cast_nullable_to_non_nullable
+as SlideshowMode,slideshowIntervalSeconds: null == slideshowIntervalSeconds ? _self.slideshowIntervalSeconds : slideshowIntervalSeconds // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }

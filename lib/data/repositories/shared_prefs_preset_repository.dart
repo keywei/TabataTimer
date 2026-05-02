@@ -4,15 +4,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/tabata_preset.dart';
+import '../../domain/entities/workout_image.dart';
 import '../../domain/repositories/preset_repository.dart';
+import '../../domain/services/image_storage.dart';
 import '../dtos/tabata_preset_dto.dart';
 
 const _kPresetsKey = 'presets_v1';
 
 class SharedPrefsPresetRepository implements PresetRepository {
-  SharedPrefsPresetRepository(this._prefs);
+  SharedPrefsPresetRepository(this._prefs, this._imageStorage);
 
   final SharedPreferences _prefs;
+  final ImageStorage _imageStorage;
   static const _uuid = Uuid();
 
   @override
@@ -30,6 +33,15 @@ class SharedPrefsPresetRepository implements PresetRepository {
     final list = await loadAll();
     final idx = list.indexWhere((p) => p.id == preset.id);
     if (idx >= 0) {
+      // Image files that were referenced by the previous version but
+      // are not in the new list are now orphaned — delete them.
+      final oldIds = list[idx].images.map((i) => i.id).toSet();
+      final newIds = preset.images.map((i) => i.id).toSet();
+      final removed = oldIds.difference(newIds);
+      for (final id in removed) {
+        final img = list[idx].images.firstWhere((i) => i.id == id);
+        await _imageStorage.delete(img.relativePath);
+      }
       list[idx] = preset;
     } else {
       list.add(preset);
@@ -41,6 +53,15 @@ class SharedPrefsPresetRepository implements PresetRepository {
   @override
   Future<void> delete(String id) async {
     final list = await loadAll();
+    final target = list.where((p) => p.id == id).cast<TabataPreset?>().firstWhere(
+          (p) => p != null,
+          orElse: () => null,
+        );
+    if (target != null) {
+      for (final img in target.images) {
+        await _imageStorage.delete(img.relativePath);
+      }
+    }
     list.removeWhere((p) => p.id == id);
     await _persist(list);
   }
@@ -62,6 +83,7 @@ class SharedPrefsPresetRepository implements PresetRepository {
         workSeconds: 20,
         restSeconds: 10,
         rounds: 8,
+        images: const <WorkoutImage>[],
       ),
       TabataPreset(
         id: _uuid.v4(),

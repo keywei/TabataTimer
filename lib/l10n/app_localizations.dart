@@ -237,6 +237,84 @@ abstract class AppLocalizations {
   /// **'Untitled'**
   String get untitled;
 
+  /// No description provided for @imagesSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get imagesSection;
+
+  /// No description provided for @imagesAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add image'**
+  String get imagesAdd;
+
+  /// No description provided for @imagesLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum {max} images'**
+  String imagesLimitReached(int max);
+
+  /// No description provided for @imagesEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Use'**
+  String get imagesEnable;
+
+  /// No description provided for @imagesReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get imagesReplace;
+
+  /// No description provided for @imagesDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get imagesDelete;
+
+  /// No description provided for @imagesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No images yet. Add up to 10 to display during workouts.'**
+  String get imagesEmpty;
+
+  /// No description provided for @imageDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this image?'**
+  String get imageDeleteConfirm;
+
+  /// No description provided for @slideshowSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Slideshow'**
+  String get slideshowSection;
+
+  /// No description provided for @slideshowModeOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get slideshowModeOff;
+
+  /// No description provided for @slideshowModeSequential.
+  ///
+  /// In en, this message translates to:
+  /// **'Sequential'**
+  String get slideshowModeSequential;
+
+  /// No description provided for @slideshowModeRandom.
+  ///
+  /// In en, this message translates to:
+  /// **'Random'**
+  String get slideshowModeRandom;
+
+  /// No description provided for @slideshowInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval (seconds)'**
+  String get slideshowInterval;
+
   /// No description provided for @presetSummary.
   ///
   /// In en, this message translates to:

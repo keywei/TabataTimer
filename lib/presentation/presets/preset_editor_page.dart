@@ -3,8 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../di/providers.dart';
+import '../../domain/entities/slideshow_mode.dart';
 import '../../domain/entities/tabata_preset.dart';
+import '../../domain/entities/workout_image.dart';
 import '../../l10n/app_localizations.dart';
+import '../shared/section_header.dart';
+import 'widgets/image_gallery_editor.dart';
 
 class PresetEditorPage extends ConsumerStatefulWidget {
   const PresetEditorPage({super.key, this.original});
@@ -23,6 +27,9 @@ class _PresetEditorPageState extends ConsumerState<PresetEditorPage> {
   late int rounds;
   late int sets;
   late int restBetweenSets;
+  late List<WorkoutImage> images;
+  late SlideshowMode slideshowMode;
+  late int slideshowInterval;
 
   @override
   void initState() {
@@ -35,6 +42,9 @@ class _PresetEditorPageState extends ConsumerState<PresetEditorPage> {
     rounds = o?.rounds ?? 8;
     sets = o?.sets ?? 1;
     restBetweenSets = o?.restBetweenSetsSeconds ?? 60;
+    images = [...(o?.images ?? const <WorkoutImage>[])];
+    slideshowMode = o?.slideshowMode ?? SlideshowMode.off;
+    slideshowInterval = o?.slideshowIntervalSeconds ?? 5;
   }
 
   @override
@@ -55,6 +65,9 @@ class _PresetEditorPageState extends ConsumerState<PresetEditorPage> {
       rounds: rounds,
       sets: sets,
       restBetweenSetsSeconds: restBetweenSets,
+      images: images,
+      slideshowMode: slideshowMode,
+      slideshowIntervalSeconds: slideshowInterval,
     );
     await ctrl.upsert(preset);
     if (mounted) context.pop();
@@ -101,8 +114,60 @@ class _PresetEditorPageState extends ConsumerState<PresetEditorPage> {
                 min: 10, max: 600,
                 onChanged: (v) => setState(() => restBetweenSets = v)),
           ],
+          SectionHeader(t.imagesSection),
+          ImageGalleryEditor(
+            images: images,
+            onChanged: (list) => setState(() => images = list),
+          ),
+          SectionHeader(t.slideshowSection),
+          _SlideshowModeSelector(
+            mode: slideshowMode,
+            onChanged: (m) => setState(() => slideshowMode = m),
+          ),
+          if (slideshowMode != SlideshowMode.off) ...[
+            const SizedBox(height: 8),
+            _Stepper(
+              label: t.slideshowInterval,
+              value: slideshowInterval,
+              min: 1,
+              max: 60,
+              onChanged: (v) => setState(() => slideshowInterval = v),
+            ),
+          ],
+          const SizedBox(height: 32),
         ],
       ),
+    );
+  }
+}
+
+class _SlideshowModeSelector extends StatelessWidget {
+  const _SlideshowModeSelector({required this.mode, required this.onChanged});
+
+  final SlideshowMode mode;
+  final ValueChanged<SlideshowMode> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+    return SegmentedButton<SlideshowMode>(
+      segments: [
+        ButtonSegment(
+          value: SlideshowMode.off,
+          label: Text(t.slideshowModeOff),
+        ),
+        ButtonSegment(
+          value: SlideshowMode.sequential,
+          label: Text(t.slideshowModeSequential),
+        ),
+        ButtonSegment(
+          value: SlideshowMode.random,
+          label: Text(t.slideshowModeRandom),
+        ),
+      ],
+      selected: {mode},
+      onSelectionChanged: (s) => onChanged(s.first),
+      showSelectedIcon: false,
     );
   }
 }

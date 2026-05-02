@@ -1,5 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'slideshow_mode.dart';
+import 'workout_image.dart';
+
 part 'tabata_preset.freezed.dart';
 
 @freezed
@@ -15,6 +18,9 @@ abstract class TabataPreset with _$TabataPreset {
     @Default(8) int rounds,
     @Default(1) int sets,
     @Default(60) int restBetweenSetsSeconds,
+    @Default(<WorkoutImage>[]) List<WorkoutImage> images,
+    @Default(SlideshowMode.off) SlideshowMode slideshowMode,
+    @Default(5) int slideshowIntervalSeconds,
   }) = _TabataPreset;
 
   int get totalSeconds {
@@ -22,4 +28,6 @@ abstract class TabataPreset with _$TabataPreset {
     final allSets = perSet * sets + restBetweenSetsSeconds * (sets - 1);
     return prepareSeconds + allSets;
   }
+
+  Iterable<WorkoutImage> get enabledImages => images.where((i) => i.enabled);
 }

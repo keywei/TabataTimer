@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../di/providers.dart';
+import '../../domain/entities/slideshow_mode.dart';
 import '../../domain/entities/tabata_preset.dart';
 import '../../domain/entities/timer_phase.dart';
 import '../../domain/entities/timer_snapshot.dart';
@@ -12,6 +13,7 @@ import '../../domain/timer/phase_transition.dart';
 import '../../l10n/app_localizations.dart';
 import '../theme/phase_colors.dart';
 import 'widgets/circular_countdown.dart';
+import 'widgets/slideshow_background.dart';
 
 class TimerPage extends ConsumerStatefulWidget {
   const TimerPage({super.key, required this.preset});
@@ -159,38 +161,52 @@ class _TimerPageState extends ConsumerState<TimerPage> {
                     },
                   ),
                 ),
-                body: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(28, 8, 28, 32),
-                    child: Column(
-                      children: [
-                        _SetRoundChips(
-                          set: snap.currentSet,
-                          totalSets: preset.sets,
-                          round: snap.currentRound,
-                          totalRounds: preset.rounds,
-                          accent: accent,
+                body: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    if (preset.slideshowMode != SlideshowMode.off &&
+                        preset.enabledImages.isNotEmpty)
+                      Positioned.fill(
+                        child: SlideshowBackground(
+                          images: preset.images,
+                          mode: preset.slideshowMode,
+                          intervalSeconds: preset.slideshowIntervalSeconds,
                         ),
-                        const Spacer(),
-                        CircularCountdown(
-                          progress: snap.phaseProgress,
-                          color: accent,
-                          label: _phaseLabel(snap.phase, t),
-                          bigText: '${snap.phaseRemainingSeconds}',
-                          subtitle: snap.phase == TimerPhase.completed
-                              ? t.doneLabel
-                              : t.totalLabelWithDuration(
-                                  _fmtMmSs(snap.totalElapsedMs ~/ 1000),
-                                  _fmtMmSs(preset.totalSeconds),
-                                ),
+                      ),
+                    SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(28, 8, 28, 32),
+                        child: Column(
+                          children: [
+                            _SetRoundChips(
+                              set: snap.currentSet,
+                              totalSets: preset.sets,
+                              round: snap.currentRound,
+                              totalRounds: preset.rounds,
+                              accent: accent,
+                            ),
+                            const Spacer(),
+                            CircularCountdown(
+                              progress: snap.phaseProgress,
+                              color: accent,
+                              label: _phaseLabel(snap.phase, t),
+                              bigText: '${snap.phaseRemainingSeconds}',
+                              subtitle: snap.phase == TimerPhase.completed
+                                  ? t.doneLabel
+                                  : t.totalLabelWithDuration(
+                                      _fmtMmSs(snap.totalElapsedMs ~/ 1000),
+                                      _fmtMmSs(preset.totalSeconds),
+                                    ),
+                            ),
+                            const Spacer(),
+                            const _TtsVolumeSlider(),
+                            const SizedBox(height: 16),
+                            _Controls(snap: snap, ctrl: ctrl),
+                          ],
                         ),
-                        const Spacer(),
-                        const _TtsVolumeSlider(),
-                        const SizedBox(height: 16),
-                        _Controls(snap: snap, ctrl: ctrl),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               );
             },

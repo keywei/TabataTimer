@@ -51,6 +51,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   clock: ^1.1.2
+  image_picker: ^1.2.2
+  path_provider: ^2.1.5
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

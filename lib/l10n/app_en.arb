@@ -31,6 +31,22 @@
   "fieldRestBetweenSets": "Rest between sets (seconds)",
   "untitled": "Untitled",
 
+  "imagesSection": "Images",
+  "imagesAdd": "Add image",
+  "imagesLimitReached": "Maximum {max} images",
+  "@imagesLimitReached": { "placeholders": { "max": { "type": "int" } } },
+  "imagesEnable": "Use",
+  "imagesReplace": "Replace",
+  "imagesDelete": "Delete",
+  "imagesEmpty": "No images yet. Add up to 10 to display during workouts.",
+  "imageDeleteConfirm": "Delete this image?",
+
+  "slideshowSection": "Slideshow",
+  "slideshowModeOff": "Off",
+  "slideshowModeSequential": "Sequential",
+  "slideshowModeRandom": "Random",
+  "slideshowInterval": "Interval (seconds)",
+
   "presetSummary": "{sets, plural, =1{} other{{sets} sets · }}{rounds} rounds · {work}s work / {rest}s rest · total {duration}",
   "@presetSummary": {
     "placeholders": {

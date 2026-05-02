@@ -80,6 +80,47 @@ class AppLocalizationsZh extends AppLocalizations {
   String get untitled => '未命名';
 
   @override
+  String get imagesSection => '圖片';
+
+  @override
+  String get imagesAdd => '加入圖片';
+
+  @override
+  String imagesLimitReached(int max) {
+    return '最多 $max 張';
+  }
+
+  @override
+  String get imagesEnable => '使用';
+
+  @override
+  String get imagesReplace => '更換';
+
+  @override
+  String get imagesDelete => '刪除';
+
+  @override
+  String get imagesEmpty => '尚未加入圖片。最多可加 10 張在訓練時顯示。';
+
+  @override
+  String get imageDeleteConfirm => '刪除這張圖片?';
+
+  @override
+  String get slideshowSection => '輪播';
+
+  @override
+  String get slideshowModeOff => '關閉';
+
+  @override
+  String get slideshowModeSequential => '依序';
+
+  @override
+  String get slideshowModeRandom => '隨機';
+
+  @override
+  String get slideshowInterval => '間隔(秒)';
+
+  @override
   String presetSummary(
     int sets,
     int rounds,
@@ -294,6 +335,47 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get untitled => '未命名';
+
+  @override
+  String get imagesSection => '圖片';
+
+  @override
+  String get imagesAdd => '加入圖片';
+
+  @override
+  String imagesLimitReached(int max) {
+    return '最多 $max 張';
+  }
+
+  @override
+  String get imagesEnable => '使用';
+
+  @override
+  String get imagesReplace => '更換';
+
+  @override
+  String get imagesDelete => '刪除';
+
+  @override
+  String get imagesEmpty => '尚未加入圖片。最多可加 10 張在訓練時顯示。';
+
+  @override
+  String get imageDeleteConfirm => '刪除這張圖片?';
+
+  @override
+  String get slideshowSection => '輪播';
+
+  @override
+  String get slideshowModeOff => '關閉';
+
+  @override
+  String get slideshowModeSequential => '依序';
+
+  @override
+  String get slideshowModeRandom => '隨機';
+
+  @override
+  String get slideshowInterval => '間隔(秒)';
 
   @override
   String presetSummary(
