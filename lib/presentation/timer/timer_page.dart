@@ -170,7 +170,6 @@ class _TimerPageState extends ConsumerState<TimerPage> {
                         child: SlideshowBackground(
                           images: preset.images,
                           mode: preset.slideshowMode,
-                          intervalSeconds: preset.slideshowIntervalSeconds,
                         ),
                       ),
                     SafeArea(

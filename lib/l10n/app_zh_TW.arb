@@ -41,7 +41,6 @@
   "slideshowModeOff": "關閉",
   "slideshowModeSequential": "依序",
   "slideshowModeRandom": "隨機",
-  "slideshowInterval": "間隔(秒)",
 
   "presetSummary": "{sets, plural, =1{} other{{sets} 組 · }}{rounds} 回合 · 訓練 {work}s / 休息 {rest}s · 總時長 {duration}",
 

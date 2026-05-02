@@ -119,9 +119,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get slideshowModeRandom => 'Random';
 
   @override
-  String get slideshowInterval => 'Interval (seconds)';
-
-  @override
   String presetSummary(
     int sets,
     int rounds,

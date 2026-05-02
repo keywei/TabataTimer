@@ -20,7 +20,6 @@ abstract class TabataPresetDto with _$TabataPresetDto {
     @Default(60) int restBetweenSetsSeconds,
     @Default(<WorkoutImageDto>[]) List<WorkoutImageDto> images,
     @Default(SlideshowMode.off) SlideshowMode slideshowMode,
-    @Default(5) int slideshowIntervalSeconds,
   }) = _TabataPresetDto;
 
   factory TabataPresetDto.fromJson(Map<String, dynamic> json) =>
@@ -39,7 +38,6 @@ extension TabataPresetDtoX on TabataPresetDto {
         restBetweenSetsSeconds: restBetweenSetsSeconds,
         images: images.map((d) => d.toEntity()).toList(),
         slideshowMode: slideshowMode,
-        slideshowIntervalSeconds: slideshowIntervalSeconds,
       );
 }
 
@@ -55,6 +53,5 @@ extension TabataPresetMapper on TabataPreset {
         restBetweenSetsSeconds: restBetweenSetsSeconds,
         images: images.map((i) => i.toDto()).toList(),
         slideshowMode: slideshowMode,
-        slideshowIntervalSeconds: slideshowIntervalSeconds,
       );
 }

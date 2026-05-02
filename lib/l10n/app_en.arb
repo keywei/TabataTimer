@@ -45,7 +45,6 @@
   "slideshowModeOff": "Off",
   "slideshowModeSequential": "Sequential",
   "slideshowModeRandom": "Random",
-  "slideshowInterval": "Interval (seconds)",
 
   "presetSummary": "{sets, plural, =1{} other{{sets} sets · }}{rounds} rounds · {work}s work / {rest}s rest · total {duration}",
   "@presetSummary": {

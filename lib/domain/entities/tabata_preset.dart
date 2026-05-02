@@ -20,7 +20,6 @@ abstract class TabataPreset with _$TabataPreset {
     @Default(60) int restBetweenSetsSeconds,
     @Default(<WorkoutImage>[]) List<WorkoutImage> images,
     @Default(SlideshowMode.off) SlideshowMode slideshowMode,
-    @Default(5) int slideshowIntervalSeconds,
   }) = _TabataPreset;
 
   int get totalSeconds {

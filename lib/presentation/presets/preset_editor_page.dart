@@ -29,7 +29,6 @@ class _PresetEditorPageState extends ConsumerState<PresetEditorPage> {
   late int restBetweenSets;
   late List<WorkoutImage> images;
   late SlideshowMode slideshowMode;
-  late int slideshowInterval;
 
   @override
   void initState() {
@@ -44,7 +43,6 @@ class _PresetEditorPageState extends ConsumerState<PresetEditorPage> {
     restBetweenSets = o?.restBetweenSetsSeconds ?? 60;
     images = [...(o?.images ?? const <WorkoutImage>[])];
     slideshowMode = o?.slideshowMode ?? SlideshowMode.off;
-    slideshowInterval = o?.slideshowIntervalSeconds ?? 5;
   }
 
   @override
@@ -67,7 +65,6 @@ class _PresetEditorPageState extends ConsumerState<PresetEditorPage> {
       restBetweenSetsSeconds: restBetweenSets,
       images: images,
       slideshowMode: slideshowMode,
-      slideshowIntervalSeconds: slideshowInterval,
     );
     await ctrl.upsert(preset);
     if (mounted) context.pop();
@@ -124,16 +121,6 @@ class _PresetEditorPageState extends ConsumerState<PresetEditorPage> {
             mode: slideshowMode,
             onChanged: (m) => setState(() => slideshowMode = m),
           ),
-          if (slideshowMode != SlideshowMode.off) ...[
-            const SizedBox(height: 8),
-            _Stepper(
-              label: t.slideshowInterval,
-              value: slideshowInterval,
-              min: 1,
-              max: 60,
-              onChanged: (v) => setState(() => slideshowInterval = v),
-            ),
-          ],
           const SizedBox(height: 32),
         ],
       ),

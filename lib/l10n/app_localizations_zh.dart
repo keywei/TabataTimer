@@ -118,9 +118,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get slideshowModeRandom => '隨機';
 
   @override
-  String get slideshowInterval => '間隔(秒)';
-
-  @override
   String presetSummary(
     int sets,
     int rounds,
@@ -373,9 +370,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get slideshowModeRandom => '隨機';
-
-  @override
-  String get slideshowInterval => '間隔(秒)';
 
   @override
   String presetSummary(

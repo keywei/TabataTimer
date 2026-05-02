@@ -25,8 +25,6 @@ _TabataPresetDto _$TabataPresetDtoFromJson(Map<String, dynamic> json) =>
       slideshowMode:
           $enumDecodeNullable(_$SlideshowModeEnumMap, json['slideshowMode']) ??
           SlideshowMode.off,
-      slideshowIntervalSeconds:
-          (json['slideshowIntervalSeconds'] as num?)?.toInt() ?? 5,
     );
 
 Map<String, dynamic> _$TabataPresetDtoToJson(_TabataPresetDto instance) =>
@@ -41,7 +39,6 @@ Map<String, dynamic> _$TabataPresetDtoToJson(_TabataPresetDto instance) =>
       'restBetweenSetsSeconds': instance.restBetweenSetsSeconds,
       'images': instance.images,
       'slideshowMode': _$SlideshowModeEnumMap[instance.slideshowMode]!,
-      'slideshowIntervalSeconds': instance.slideshowIntervalSeconds,
     };
 
 const _$SlideshowModeEnumMap = {

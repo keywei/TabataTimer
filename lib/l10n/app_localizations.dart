@@ -309,12 +309,6 @@ abstract class AppLocalizations {
   /// **'Random'**
   String get slideshowModeRandom;
 
-  /// No description provided for @slideshowInterval.
-  ///
-  /// In en, this message translates to:
-  /// **'Interval (seconds)'**
-  String get slideshowInterval;
-
   /// No description provided for @presetSummary.
   ///
   /// In en, this message translates to:

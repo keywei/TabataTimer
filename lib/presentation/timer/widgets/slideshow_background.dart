@@ -7,23 +7,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../di/providers.dart';
 import '../../../domain/entities/slideshow_mode.dart';
+import '../../../domain/entities/timer_phase.dart';
 import '../../../domain/entities/workout_image.dart';
+import '../../../domain/timer/phase_transition.dart';
 
 class SlideshowBackground extends ConsumerStatefulWidget {
   const SlideshowBackground({
     super.key,
     required this.images,
     required this.mode,
-    required this.intervalSeconds,
     this.dim = 0.55,
   });
 
   final List<WorkoutImage> images;
   final SlideshowMode mode;
-  final int intervalSeconds;
 
-  /// 0..1 — how much black overlay to draw over the image to keep
-  /// foreground text readable.
+  /// 0..1 — black overlay opacity to keep foreground text readable.
   final double dim;
 
   @override
@@ -32,8 +31,8 @@ class SlideshowBackground extends ConsumerStatefulWidget {
 }
 
 class _SlideshowBackgroundState extends ConsumerState<SlideshowBackground> {
-  Timer? _timer;
-  int _index = 0;
+  StreamSubscription<PhaseTransition>? _sub;
+  int _index = -1;
   final _random = Random();
   final Map<String, String?> _resolved = {};
 
@@ -44,24 +43,22 @@ class _SlideshowBackgroundState extends ConsumerState<SlideshowBackground> {
   void initState() {
     super.initState();
     _resolveAll();
-    _scheduleNext();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final ctrl = ref.read(workoutControllerProvider.notifier);
+      _sub = ctrl.transitions.listen(_onTransition);
+    });
   }
 
   @override
   void didUpdateWidget(covariant SlideshowBackground old) {
     super.didUpdateWidget(old);
-    if (widget.intervalSeconds != old.intervalSeconds ||
-        widget.mode != old.mode ||
-        widget.images.length != old.images.length) {
-      _timer?.cancel();
-      _scheduleNext();
-    }
     _resolveAll();
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _sub?.cancel();
     super.dispose();
   }
 
@@ -75,26 +72,22 @@ class _SlideshowBackgroundState extends ConsumerState<SlideshowBackground> {
     }
   }
 
-  void _scheduleNext() {
-    if (widget.mode == SlideshowMode.off) return;
-    final list = _enabled;
-    if (list.length <= 1) return;
-    _timer = Timer.periodic(
-      Duration(seconds: widget.intervalSeconds.clamp(1, 60)),
-      (_) => _advance(),
-    );
-  }
+  void _onTransition(PhaseTransition ev) {
+    // The slideshow advances on every meaningful phase entry —
+    // prepare, each work round, each rest, and the inter-set rest.
+    // idle and completed are bookkeeping states; do nothing for them.
+    if (ev.to == TimerPhase.idle || ev.to == TimerPhase.completed) return;
 
-  void _advance() {
     final list = _enabled;
     if (list.isEmpty) return;
+
     setState(() {
       if (widget.mode == SlideshowMode.random && list.length > 1) {
         var next = _random.nextInt(list.length);
         if (next == _index) next = (next + 1) % list.length;
         _index = next;
       } else {
-        _index = (_index + 1) % list.length;
+        _index = _index < 0 ? 0 : (_index + 1) % list.length;
       }
     });
   }
@@ -102,7 +95,7 @@ class _SlideshowBackgroundState extends ConsumerState<SlideshowBackground> {
   @override
   Widget build(BuildContext context) {
     final list = _enabled;
-    if (widget.mode == SlideshowMode.off || list.isEmpty) {
+    if (widget.mode == SlideshowMode.off || list.isEmpty || _index < 0) {
       return const SizedBox.shrink();
     }
     final current = list[_index.clamp(0, list.length - 1)];
