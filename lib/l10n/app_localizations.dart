@@ -327,6 +327,12 @@ abstract class AppLocalizations {
   /// **'Total {time}'**
   String totalLabel(String time);
 
+  /// No description provided for @totalLabelWithDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Total {elapsed} / {total}'**
+  String totalLabelWithDuration(String elapsed, String total);
+
   /// No description provided for @doneLabel.
   ///
   /// In en, this message translates to:

@@ -45,6 +45,7 @@
   "ttsHalfway": "過半",
 
   "totalLabel": "總計 {time}",
+  "totalLabelWithDuration": "總計 {elapsed} / {total}",
   "doneLabel": "完成!",
 
   "setRoundChip": "第 {set} / {totalSets} 組",

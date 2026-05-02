@@ -140,6 +140,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String totalLabelWithDuration(String elapsed, String total) {
+    return 'Total $elapsed / $total';
+  }
+
+  @override
   String get doneLabel => 'Done!';
 
   @override

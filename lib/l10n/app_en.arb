@@ -61,6 +61,13 @@
 
   "totalLabel": "Total {time}",
   "@totalLabel": { "placeholders": { "time": { "type": "String" } } },
+  "totalLabelWithDuration": "Total {elapsed} / {total}",
+  "@totalLabelWithDuration": {
+    "placeholders": {
+      "elapsed": { "type": "String" },
+      "total": { "type": "String" }
+    }
+  },
   "doneLabel": "Done!",
 
   "setRoundChip": "Set {set} / {totalSets}",

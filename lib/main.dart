@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'di/providers.dart';
 import 'presentation/app.dart';
 
 Future<void> main() async {
@@ -21,5 +24,20 @@ Future<void> main() async {
     androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
     androidWillPauseWhenDucked: false,
   ));
-  runApp(const ProviderScope(child: TabataApp()));
+
+  final container = ProviderContainer();
+  // Prompt for notification permission as soon as the notifier is ready,
+  // without blocking app startup. iOS shows the system alert; Android 13+
+  // shows the runtime permission dialog.
+  unawaited(
+    container
+        .read(workoutNotifierProvider.future)
+        .then((n) => n.requestPermission())
+        .catchError((_) => false),
+  );
+
+  runApp(UncontrolledProviderScope(
+    container: container,
+    child: const TabataApp(),
+  ));
 }

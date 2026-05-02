@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -11,16 +13,43 @@ class FlutterLocalWorkoutNotifier implements WorkoutNotifier {
 
   static Future<FlutterLocalWorkoutNotifier> create() async {
     final plugin = FlutterLocalNotificationsPlugin();
+    // Don't request iOS permission here — defer to requestPermission()
+    // so the prompt timing is controlled by the app, not by plugin init.
     const initAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
     const initIos = DarwinInitializationSettings(
-      requestAlertPermission: true,
+      requestAlertPermission: false,
       requestBadgePermission: false,
-      requestSoundPermission: true,
+      requestSoundPermission: false,
     );
     await plugin.initialize(
       settings: const InitializationSettings(android: initAndroid, iOS: initIos),
     );
     return FlutterLocalWorkoutNotifier._(plugin);
+  }
+
+  @override
+  Future<bool> requestPermission() async {
+    try {
+      if (Platform.isIOS) {
+        final ios = _plugin.resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>();
+        final granted = await ios?.requestPermissions(
+          alert: true,
+          badge: false,
+          sound: true,
+        );
+        return granted ?? false;
+      }
+      if (Platform.isAndroid) {
+        final android = _plugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+        final granted = await android?.requestNotificationsPermission();
+        return granted ?? true;
+      }
+    } catch (e) {
+      if (kDebugMode) debugPrint('notif permission error: $e');
+    }
+    return true;
   }
 
   @override

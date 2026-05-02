@@ -140,6 +140,11 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String totalLabelWithDuration(String elapsed, String total) {
+    return '總計 $elapsed / $total';
+  }
+
+  @override
   String get doneLabel => '完成!';
 
   @override
@@ -348,6 +353,11 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   @override
   String totalLabel(String time) {
     return '總計 $time';
+  }
+
+  @override
+  String totalLabelWithDuration(String elapsed, String total) {
+    return '總計 $elapsed / $total';
   }
 
   @override

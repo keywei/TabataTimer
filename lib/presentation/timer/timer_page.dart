@@ -179,7 +179,10 @@ class _TimerPageState extends ConsumerState<TimerPage> {
                           bigText: '${snap.phaseRemainingSeconds}',
                           subtitle: snap.phase == TimerPhase.completed
                               ? t.doneLabel
-                              : t.totalLabel(_fmtMmSs(snap.totalElapsedMs ~/ 1000)),
+                              : t.totalLabelWithDuration(
+                                  _fmtMmSs(snap.totalElapsedMs ~/ 1000),
+                                  _fmtMmSs(preset.totalSeconds),
+                                ),
                         ),
                         const Spacer(),
                         const _TtsVolumeSlider(),
