@@ -108,6 +108,7 @@
   },
   "historyClearTitle": "Clear all history?",
   "historyClearAction": "Clear history",
+  "historyDeleteConfirm": "Delete this entry?",
 
   "settingsLanguage": "Language",
   "settingsTheme": "Theme",

@@ -477,6 +477,12 @@ abstract class AppLocalizations {
   /// **'Clear history'**
   String get historyClearAction;
 
+  /// No description provided for @historyDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this entry?'**
+  String get historyDeleteConfirm;
+
   /// No description provided for @settingsLanguage.
   ///
   /// In en, this message translates to:

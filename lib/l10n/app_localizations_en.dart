@@ -227,6 +227,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyClearAction => 'Clear history';
 
   @override
+  String get historyDeleteConfirm => 'Delete this entry?';
+
+  @override
   String get settingsLanguage => 'Language';
 
   @override

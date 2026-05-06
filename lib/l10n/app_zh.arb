@@ -76,6 +76,7 @@
   "historyEntrySubtitle": "{rounds} 回合 · {duration}",
   "historyClearTitle": "清除所有紀錄?",
   "historyClearAction": "清除紀錄",
+  "historyDeleteConfirm": "刪除這筆紀錄?",
 
   "settingsLanguage": "語言",
   "settingsTheme": "主題",

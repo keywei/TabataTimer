@@ -225,6 +225,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get historyClearAction => '清除紀錄';
 
   @override
+  String get historyDeleteConfirm => '刪除這筆紀錄?';
+
+  @override
   String get settingsLanguage => '語言';
 
   @override
@@ -477,6 +480,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get historyClearAction => '清除紀錄';
+
+  @override
+  String get historyDeleteConfirm => '刪除這筆紀錄?';
 
   @override
   String get settingsLanguage => '語言';

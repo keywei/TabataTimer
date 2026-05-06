@@ -115,34 +115,66 @@ class _GroupedList extends StatelessWidget {
   String _two(int n) => n.toString().padLeft(2, '0');
 }
 
-class _HistoryTile extends StatelessWidget {
+class _HistoryTile extends ConsumerWidget {
   const _HistoryTile({required this.entry});
   final WorkoutHistoryEntry entry;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final t = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
     final time = '${_two(entry.completedAt.hour)}:${_two(entry.completedAt.minute)}';
 
-    return ListTile(
-      leading: Container(
-        width: 32,
-        height: 32,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: scheme.outline, width: 1),
-        ),
-        child: Icon(Icons.check, size: 16, color: scheme.onSurfaceVariant),
+    return Dismissible(
+      key: ValueKey(entry.id),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: scheme.error.withValues(alpha: 0.08),
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Icon(Icons.delete_outline, color: scheme.error, size: 22),
       ),
-      title: Text(entry.presetName),
-      subtitle: Text(t.historyEntrySubtitle(entry.totalRounds, _fmtMmSs(entry.durationSeconds))),
-      trailing: Text(
-        time,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: scheme.onSurfaceVariant,
-              fontFeatures: const [FontFeature.tabularFigures()],
-            ),
+      confirmDismiss: (_) async {
+        return await showDialog<bool>(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                title: Text(t.historyDeleteConfirm),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(ctx, false),
+                    child: Text(t.actionCancel),
+                  ),
+                  FilledButton(
+                    onPressed: () => Navigator.pop(ctx, true),
+                    child: Text(t.actionDelete),
+                  ),
+                ],
+              ),
+            ) ??
+            false;
+      },
+      onDismissed: (_) => ref
+          .read(historyControllerProvider.notifier)
+          .deleteOne(entry.id),
+      child: ListTile(
+        leading: Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: scheme.outline, width: 1),
+          ),
+          child: Icon(Icons.check, size: 16, color: scheme.onSurfaceVariant),
+        ),
+        title: Text(entry.presetName),
+        subtitle: Text(t.historyEntrySubtitle(entry.totalRounds, _fmtMmSs(entry.durationSeconds))),
+        trailing: Text(
+          time,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: scheme.onSurfaceVariant,
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
+        ),
       ),
     );
   }
