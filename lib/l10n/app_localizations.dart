@@ -483,6 +483,72 @@ abstract class AppLocalizations {
   /// **'Delete this entry?'**
   String get historyDeleteConfirm;
 
+  /// No description provided for @historyExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get historyExport;
+
+  /// No description provided for @historyImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get historyImport;
+
+  /// No description provided for @historyExportEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No history to export.'**
+  String get historyExportEmpty;
+
+  /// No description provided for @historyImportNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries found in file.'**
+  String get historyImportNothing;
+
+  /// No description provided for @historyImportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read file: {message}'**
+  String historyImportFailed(String message);
+
+  /// No description provided for @historyImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import {count} entries?'**
+  String historyImportTitle(int count);
+
+  /// No description provided for @historyImportMerge.
+  ///
+  /// In en, this message translates to:
+  /// **'Merge'**
+  String get historyImportMerge;
+
+  /// No description provided for @historyImportReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace all'**
+  String get historyImportReplace;
+
+  /// No description provided for @historyImportMergedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Added {count} new entries.'**
+  String historyImportMergedToast(int count);
+
+  /// No description provided for @historyImportReplacedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Replaced with {count} entries.'**
+  String historyImportReplacedToast(int count);
+
+  /// No description provided for @historyImportNoNewToast.
+  ///
+  /// In en, this message translates to:
+  /// **'All entries already in history.'**
+  String get historyImportNoNewToast;
+
   /// No description provided for @settingsLanguage.
   ///
   /// In en, this message translates to:

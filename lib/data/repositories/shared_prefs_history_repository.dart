@@ -48,6 +48,16 @@ class SharedPrefsHistoryRepository implements HistoryRepository {
     await _prefs.remove(_kHistoryKey);
   }
 
+  @override
+  Future<void> replaceAll(List<WorkoutHistoryEntry> entries) async {
+    final sorted = [...entries]
+      ..sort((a, b) => b.completedAt.compareTo(a.completedAt));
+    final trimmed = sorted.length > _kHistoryMax
+        ? sorted.sublist(0, _kHistoryMax)
+        : sorted;
+    await _persist(trimmed);
+  }
+
   Future<void> _persist(List<WorkoutHistoryEntry> list) async {
     final encoded = jsonEncode(list.map((e) => e.toDto().toJson()).toList());
     await _prefs.setString(_kHistoryKey, encoded);

@@ -230,6 +230,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyDeleteConfirm => 'Delete this entry?';
 
   @override
+  String get historyExport => 'Export';
+
+  @override
+  String get historyImport => 'Import';
+
+  @override
+  String get historyExportEmpty => 'No history to export.';
+
+  @override
+  String get historyImportNothing => 'No entries found in file.';
+
+  @override
+  String historyImportFailed(String message) {
+    return 'Could not read file: $message';
+  }
+
+  @override
+  String historyImportTitle(int count) {
+    return 'Import $count entries?';
+  }
+
+  @override
+  String get historyImportMerge => 'Merge';
+
+  @override
+  String get historyImportReplace => 'Replace all';
+
+  @override
+  String historyImportMergedToast(int count) {
+    return 'Added $count new entries.';
+  }
+
+  @override
+  String historyImportReplacedToast(int count) {
+    return 'Replaced with $count entries.';
+  }
+
+  @override
+  String get historyImportNoNewToast => 'All entries already in history.';
+
+  @override
   String get settingsLanguage => 'Language';
 
   @override

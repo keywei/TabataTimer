@@ -228,6 +228,47 @@ class AppLocalizationsZh extends AppLocalizations {
   String get historyDeleteConfirm => '刪除這筆紀錄?';
 
   @override
+  String get historyExport => '匯出';
+
+  @override
+  String get historyImport => '匯入';
+
+  @override
+  String get historyExportEmpty => '目前沒有紀錄可匯出。';
+
+  @override
+  String get historyImportNothing => '檔案中沒有可匯入的紀錄。';
+
+  @override
+  String historyImportFailed(String message) {
+    return '讀取檔案失敗:$message';
+  }
+
+  @override
+  String historyImportTitle(int count) {
+    return '要匯入 $count 筆紀錄嗎?';
+  }
+
+  @override
+  String get historyImportMerge => '合併';
+
+  @override
+  String get historyImportReplace => '全部取代';
+
+  @override
+  String historyImportMergedToast(int count) {
+    return '新增了 $count 筆紀錄。';
+  }
+
+  @override
+  String historyImportReplacedToast(int count) {
+    return '已用 $count 筆紀錄取代。';
+  }
+
+  @override
+  String get historyImportNoNewToast => '所有紀錄都已存在。';
+
+  @override
   String get settingsLanguage => '語言';
 
   @override
@@ -483,6 +524,47 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get historyDeleteConfirm => '刪除這筆紀錄?';
+
+  @override
+  String get historyExport => '匯出';
+
+  @override
+  String get historyImport => '匯入';
+
+  @override
+  String get historyExportEmpty => '目前沒有紀錄可匯出。';
+
+  @override
+  String get historyImportNothing => '檔案中沒有可匯入的紀錄。';
+
+  @override
+  String historyImportFailed(String message) {
+    return '讀取檔案失敗:$message';
+  }
+
+  @override
+  String historyImportTitle(int count) {
+    return '要匯入 $count 筆紀錄嗎?';
+  }
+
+  @override
+  String get historyImportMerge => '合併';
+
+  @override
+  String get historyImportReplace => '全部取代';
+
+  @override
+  String historyImportMergedToast(int count) {
+    return '新增了 $count 筆紀錄。';
+  }
+
+  @override
+  String historyImportReplacedToast(int count) {
+    return '已用 $count 筆紀錄取代。';
+  }
+
+  @override
+  String get historyImportNoNewToast => '所有紀錄都已存在。';
 
   @override
   String get settingsLanguage => '語言';

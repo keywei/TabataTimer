@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../di/providers.dart';
 import '../../domain/entities/workout_history_entry.dart';
+import '../../domain/services/history_archive.dart';
 import '../../l10n/app_localizations.dart';
 import '../shared/section_header.dart';
 
@@ -14,19 +15,62 @@ class HistoryPage extends ConsumerWidget {
     final t = AppLocalizations.of(context);
     final async = ref.watch(historyControllerProvider);
 
+    final hasEntries = async.maybeWhen(
+      data: (list) => list.isNotEmpty,
+      orElse: () => false,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(t.tabHistory),
         actions: [
-          async.maybeWhen(
-            data: (list) => list.isEmpty
-                ? const SizedBox.shrink()
-                : IconButton(
-                    icon: const Icon(Icons.delete_sweep_outlined),
-                    tooltip: t.historyClearAction,
-                    onPressed: () => _confirmClear(context, ref, t),
-                  ),
-            orElse: () => const SizedBox.shrink(),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (value) {
+              switch (value) {
+                case 'export':
+                  _onExport(context, ref, t);
+                case 'import':
+                  _onImport(context, ref, t);
+                case 'clear':
+                  _confirmClear(context, ref, t);
+              }
+            },
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                value: 'export',
+                enabled: hasEntries,
+                child: Row(
+                  children: [
+                    const Icon(Icons.ios_share_outlined, size: 18),
+                    const SizedBox(width: 12),
+                    Text(t.historyExport),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'import',
+                child: Row(
+                  children: [
+                    const Icon(Icons.file_download_outlined, size: 18),
+                    const SizedBox(width: 12),
+                    Text(t.historyImport),
+                  ],
+                ),
+              ),
+              const PopupMenuDivider(),
+              PopupMenuItem(
+                value: 'clear',
+                enabled: hasEntries,
+                child: Row(
+                  children: [
+                    const Icon(Icons.delete_sweep_outlined, size: 18),
+                    const SizedBox(width: 12),
+                    Text(t.historyClearAction),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -39,6 +83,79 @@ class HistoryPage extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  void _snack(BuildContext ctx, String message) {
+    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Future<void> _onExport(
+      BuildContext context, WidgetRef ref, AppLocalizations t) async {
+    try {
+      final shared =
+          await ref.read(historyControllerProvider.notifier).exportAndShare();
+      if (!shared && context.mounted) _snack(context, t.historyExportEmpty);
+    } catch (e) {
+      if (context.mounted) _snack(context, t.historyImportFailed('$e'));
+    }
+  }
+
+  Future<void> _onImport(
+      BuildContext context, WidgetRef ref, AppLocalizations t) async {
+    final controller = ref.read(historyControllerProvider.notifier);
+    List<WorkoutHistoryEntry>? imported;
+    try {
+      imported = await controller.pickToImport();
+    } on HistoryArchiveException catch (e) {
+      if (context.mounted) _snack(context, t.historyImportFailed(e.message));
+      return;
+    } catch (e) {
+      if (context.mounted) _snack(context, t.historyImportFailed('$e'));
+      return;
+    }
+    if (imported == null) return; // user cancelled
+    if (imported.isEmpty) {
+      if (context.mounted) _snack(context, t.historyImportNothing);
+      return;
+    }
+    if (!context.mounted) return;
+
+    final mode = await showDialog<_ImportMode>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(t.historyImportTitle(imported!.length)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(t.actionCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, _ImportMode.replace),
+            child: Text(t.historyImportReplace),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, _ImportMode.merge),
+            child: Text(t.historyImportMerge),
+          ),
+        ],
+      ),
+    );
+
+    if (mode == null || !context.mounted) return;
+    if (mode == _ImportMode.merge) {
+      final added = await controller.mergeImported(imported);
+      if (!context.mounted) return;
+      _snack(
+        context,
+        added == 0
+            ? t.historyImportNoNewToast
+            : t.historyImportMergedToast(added),
+      );
+    } else {
+      final count = await controller.replaceWithImported(imported);
+      if (!context.mounted) return;
+      _snack(context, t.historyImportReplacedToast(count));
+    }
   }
 
   Future<void> _confirmClear(BuildContext context, WidgetRef ref, AppLocalizations t) async {
@@ -57,6 +174,8 @@ class HistoryPage extends ConsumerWidget {
     }
   }
 }
+
+enum _ImportMode { merge, replace }
 
 class _Empty extends StatelessWidget {
   const _Empty({required this.message});

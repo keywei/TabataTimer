@@ -11,6 +11,7 @@ import '../data/repositories/shared_prefs_settings_repository.dart';
 import '../data/services/file_image_storage.dart';
 import '../data/services/flutter_local_workout_notifier.dart';
 import '../data/services/flutter_tts_speaker.dart';
+import '../data/services/json_history_archive.dart';
 import '../data/services/silent_loop_keepalive.dart';
 import '../data/services/system_audio_cue.dart';
 import '../data/services/vibration_haptics.dart';
@@ -26,6 +27,7 @@ import '../domain/repositories/settings_repository.dart';
 import '../domain/services/audio_cue.dart';
 import '../domain/services/background_keepalive.dart';
 import '../domain/services/haptics.dart';
+import '../domain/services/history_archive.dart';
 import '../domain/services/image_storage.dart';
 import '../domain/services/tts_speaker.dart';
 import '../domain/services/wake_lock.dart';
@@ -39,6 +41,8 @@ final sharedPreferencesProvider = FutureProvider<SharedPreferences>((_) {
 final clockProvider = Provider<Clock>((_) => const SystemClock());
 
 final imageStorageProvider = Provider<ImageStorage>((_) => FileImageStorage());
+
+final historyArchiveProvider = Provider<HistoryArchive>((_) => JsonHistoryArchive());
 
 final presetRepositoryProvider = FutureProvider<PresetRepository>((ref) async {
   final prefs = await ref.watch(sharedPreferencesProvider.future);
