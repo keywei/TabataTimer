@@ -48,6 +48,11 @@ class _TimerPageState extends ConsumerState<TimerPage> {
     _sub?.cancel();
     _countdownSub?.cancel();
     _halfwaySub?.cancel();
+    // Best-effort: drop the ongoing notification when leaving the page.
+    ref
+        .read(workoutNotifierProvider.future)
+        .then((n) => n.cancelOngoing())
+        .catchError((_) {});
     super.dispose();
   }
 
@@ -96,14 +101,24 @@ class _TimerPageState extends ConsumerState<TimerPage> {
       case TimerPhase.completed:
         say(t.ttsWorkoutComplete);
         final notifier = await ref.read(workoutNotifierProvider.future);
+        unawaited(notifier.cancelOngoing());
         unawaited(notifier.showCompleted(
           title: t.notifWorkoutCompleteTitle,
           body: t.notifWorkoutCompleteBody,
         ));
-        break;
+        return;
       case TimerPhase.idle:
-        break;
+        return;
     }
+
+    // Update the persistent ongoing notification on every meaningful
+    // phase entry so the lock screen / status bar always reflects the
+    // current round and phase.
+    final preset = widget.preset;
+    final phaseLabel = _phaseLabel(ev.to, t);
+    final body = t.notifOngoingBody(ev.round, preset.rounds, phaseLabel);
+    final notifier = await ref.read(workoutNotifierProvider.future);
+    unawaited(notifier.showOngoing(title: preset.name, body: body));
   }
 
   @override

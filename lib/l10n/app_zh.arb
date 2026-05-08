@@ -115,5 +115,6 @@
   "languageChinese": "繁體中文",
 
   "notifWorkoutCompleteTitle": "訓練完成!",
-  "notifWorkoutCompleteBody": "做得好,你完成了這次 Tabata。"
+  "notifWorkoutCompleteBody": "做得好,你完成了這次 Tabata。",
+  "notifOngoingBody": "第 {round}/{total} 回合 · {phase}"
 }

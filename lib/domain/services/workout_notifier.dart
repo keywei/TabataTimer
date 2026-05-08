@@ -6,4 +6,12 @@ abstract class WorkoutNotifier {
   Future<bool> requestPermission();
 
   Future<void> showCompleted({required String title, required String body});
+
+  /// Show / update a persistent "workout in progress" notification on
+  /// Android (foreground-style, ongoing, no sound). On iOS this is a
+  /// no-op until Live Activity support is added.
+  Future<void> showOngoing({required String title, required String body});
+
+  /// Dismiss the ongoing notification (no-op if none).
+  Future<void> cancelOngoing();
 }

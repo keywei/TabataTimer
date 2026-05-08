@@ -345,6 +345,11 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get notifWorkoutCompleteBody => '做得好,你完成了這次 Tabata。';
+
+  @override
+  String notifOngoingBody(int round, int total, String phase) {
+    return '第 $round/$total 回合 · $phase';
+  }
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -688,4 +693,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get notifWorkoutCompleteBody => '做得好,你完成了這次 Tabata。';
+
+  @override
+  String notifOngoingBody(int round, int total, String phase) {
+    return '第 $round/$total 回合 · $phase';
+  }
 }

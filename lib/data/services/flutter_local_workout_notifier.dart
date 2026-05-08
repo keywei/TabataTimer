@@ -10,6 +10,9 @@ class FlutterLocalWorkoutNotifier implements WorkoutNotifier {
 
   final FlutterLocalNotificationsPlugin _plugin;
   static const _channelId = 'tabata_workout';
+  static const _ongoingChannelId = 'tabata_workout_ongoing';
+  static const _completedId = 1;
+  static const _ongoingId = 2;
 
   static Future<FlutterLocalWorkoutNotifier> create() async {
     final plugin = FlutterLocalNotificationsPlugin();
@@ -56,7 +59,7 @@ class FlutterLocalWorkoutNotifier implements WorkoutNotifier {
   Future<void> showCompleted({required String title, required String body}) async {
     try {
       await _plugin.show(
-        id: 1,
+        id: _completedId,
         title: title,
         body: body,
         notificationDetails: const NotificationDetails(
@@ -72,5 +75,46 @@ class FlutterLocalWorkoutNotifier implements WorkoutNotifier {
     } catch (e) {
       if (kDebugMode) debugPrint('notif error: $e');
     }
+  }
+
+  @override
+  Future<void> showOngoing({required String title, required String body}) async {
+    try {
+      await _plugin.show(
+        id: _ongoingId,
+        title: title,
+        body: body,
+        notificationDetails: const NotificationDetails(
+          android: AndroidNotificationDetails(
+            _ongoingChannelId,
+            'Workout in progress',
+            channelDescription: 'Persistent reminder during a workout',
+            importance: Importance.low,
+            priority: Priority.low,
+            ongoing: true,
+            autoCancel: false,
+            onlyAlertOnce: true,
+            playSound: false,
+            enableVibration: false,
+            showWhen: false,
+          ),
+          iOS: DarwinNotificationDetails(
+            presentAlert: false,
+            presentSound: false,
+            presentBadge: false,
+            interruptionLevel: InterruptionLevel.passive,
+          ),
+        ),
+      );
+    } catch (e) {
+      if (kDebugMode) debugPrint('ongoing notif error: $e');
+    }
+  }
+
+  @override
+  Future<void> cancelOngoing() async {
+    try {
+      await _plugin.cancel(id: _ongoingId);
+    } catch (_) {}
   }
 }

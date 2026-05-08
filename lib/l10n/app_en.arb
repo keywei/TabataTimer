@@ -151,5 +151,13 @@
   "languageChinese": "繁體中文",
 
   "notifWorkoutCompleteTitle": "Workout complete!",
-  "notifWorkoutCompleteBody": "Great job — you finished your Tabata."
+  "notifWorkoutCompleteBody": "Great job — you finished your Tabata.",
+  "notifOngoingBody": "Round {round}/{total} · {phase}",
+  "@notifOngoingBody": {
+    "placeholders": {
+      "round": { "type": "int" },
+      "total": { "type": "int" },
+      "phase": { "type": "String" }
+    }
+  }
 }

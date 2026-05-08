@@ -704,6 +704,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Great job — you finished your Tabata.'**
   String get notifWorkoutCompleteBody;
+
+  /// No description provided for @notifOngoingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Round {round}/{total} · {phase}'**
+  String notifOngoingBody(int round, int total, String phase);
 }
 
 class _AppLocalizationsDelegate

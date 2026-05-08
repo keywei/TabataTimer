@@ -348,4 +348,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notifWorkoutCompleteBody =>
       'Great job — you finished your Tabata.';
+
+  @override
+  String notifOngoingBody(int round, int total, String phase) {
+    return 'Round $round/$total · $phase';
+  }
 }
