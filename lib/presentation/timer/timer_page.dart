@@ -177,6 +177,12 @@ class _TimerPageState extends ConsumerState<TimerPage> {
                         padding: const EdgeInsets.fromLTRB(28, 8, 28, 32),
                         child: Column(
                           children: [
+                            _OverallProgress(
+                              elapsedMs: snap.totalElapsedMs,
+                              totalSeconds: preset.totalSeconds,
+                              accent: accent,
+                            ),
+                            const SizedBox(height: 12),
                             _SetRoundChips(
                               set: snap.currentSet,
                               totalSets: preset.sets,
@@ -251,6 +257,34 @@ class _TimerPageState extends ConsumerState<TimerPage> {
     final m = (s ~/ 60).toString().padLeft(2, '0');
     final ss = (s % 60).toString().padLeft(2, '0');
     return '$m:$ss';
+  }
+}
+
+class _OverallProgress extends StatelessWidget {
+  const _OverallProgress({
+    required this.elapsedMs,
+    required this.totalSeconds,
+    required this.accent,
+  });
+
+  final int elapsedMs;
+  final int totalSeconds;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final total = totalSeconds <= 0 ? 1 : totalSeconds;
+    final progress = (elapsedMs / 1000 / total).clamp(0.0, 1.0);
+    final track = Theme.of(context).colorScheme.outlineVariant;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(2),
+      child: LinearProgressIndicator(
+        value: progress,
+        minHeight: 3,
+        color: accent,
+        backgroundColor: track,
+      ),
+    );
   }
 }
 
