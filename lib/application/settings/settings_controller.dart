@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../di/providers.dart';
@@ -34,4 +37,29 @@ class SettingsController extends AsyncNotifier<AppSettings> {
     await _repository.save(updated);
     state = AsyncData(updated);
   }
+
+  bool get isPasswordSet {
+    final hash = state.value?.passwordHash;
+    return hash != null && hash.isNotEmpty;
+  }
+
+  /// Sets a new password (or clears it when [raw] is null/empty).
+  /// Stores SHA-256 hex; never the plain text.
+  Future<void> setPassword(String? raw) async {
+    final current = state.value ?? const AppSettings();
+    final hash = (raw == null || raw.isEmpty) ? null : _hash(raw);
+    final updated = current.copyWith(passwordHash: hash);
+    await _repository.save(updated);
+    state = AsyncData(updated);
+  }
+
+  /// Returns true if [raw] matches the stored password (or if none is set).
+  bool verifyPassword(String raw) {
+    final stored = state.value?.passwordHash;
+    if (stored == null || stored.isEmpty) return true;
+    return _hash(raw) == stored;
+  }
+
+  String _hash(String raw) =>
+      sha256.convert(utf8.encode(raw)).toString();
 }

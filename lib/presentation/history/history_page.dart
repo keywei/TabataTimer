@@ -5,6 +5,7 @@ import '../../di/providers.dart';
 import '../../domain/entities/workout_history_entry.dart';
 import '../../domain/services/history_archive.dart';
 import '../../l10n/app_localizations.dart';
+import '../shared/password_dialog.dart';
 import '../shared/section_header.dart';
 
 class HistoryPage extends ConsumerWidget {
@@ -169,9 +170,10 @@ class HistoryPage extends ConsumerWidget {
         ],
       ),
     );
-    if (ok == true) {
-      await ref.read(historyControllerProvider.notifier).clearAll();
-    }
+    if (ok != true || !context.mounted) return;
+    final passOk = await ensurePasswordOrAsk(context, ref);
+    if (!passOk) return;
+    await ref.read(historyControllerProvider.notifier).clearAll();
   }
 }
 
@@ -254,7 +256,7 @@ class _HistoryTile extends ConsumerWidget {
         child: Icon(Icons.delete_outline, color: scheme.error, size: 22),
       ),
       confirmDismiss: (_) async {
-        return await showDialog<bool>(
+        final confirmed = await showDialog<bool>(
               context: context,
               builder: (ctx) => AlertDialog(
                 title: Text(t.historyDeleteConfirm),
@@ -271,6 +273,9 @@ class _HistoryTile extends ConsumerWidget {
               ),
             ) ??
             false;
+        if (!confirmed) return false;
+        if (!context.mounted) return false;
+        return ensurePasswordOrAsk(context, ref);
       },
       onDismissed: (_) => ref
           .read(historyControllerProvider.notifier)

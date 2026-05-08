@@ -14,7 +14,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppSettings {
 
- AppThemeMode get themeMode; String? get localeTag; double get ttsVolume;
+ AppThemeMode get themeMode; String? get localeTag; double get ttsVolume;/// SHA-256 hex of the destructive-action password. Null = no gate.
+ String? get passwordHash;
 /// Create a copy of AppSettings
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +26,16 @@ $AppSettingsCopyWith<AppSettings> get copyWith => _$AppSettingsCopyWithImpl<AppS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppSettings&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.localeTag, localeTag) || other.localeTag == localeTag)&&(identical(other.ttsVolume, ttsVolume) || other.ttsVolume == ttsVolume));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppSettings&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.localeTag, localeTag) || other.localeTag == localeTag)&&(identical(other.ttsVolume, ttsVolume) || other.ttsVolume == ttsVolume)&&(identical(other.passwordHash, passwordHash) || other.passwordHash == passwordHash));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,themeMode,localeTag,ttsVolume);
+int get hashCode => Object.hash(runtimeType,themeMode,localeTag,ttsVolume,passwordHash);
 
 @override
 String toString() {
-  return 'AppSettings(themeMode: $themeMode, localeTag: $localeTag, ttsVolume: $ttsVolume)';
+  return 'AppSettings(themeMode: $themeMode, localeTag: $localeTag, ttsVolume: $ttsVolume, passwordHash: $passwordHash)';
 }
 
 
@@ -45,7 +46,7 @@ abstract mixin class $AppSettingsCopyWith<$Res>  {
   factory $AppSettingsCopyWith(AppSettings value, $Res Function(AppSettings) _then) = _$AppSettingsCopyWithImpl;
 @useResult
 $Res call({
- AppThemeMode themeMode, String? localeTag, double ttsVolume
+ AppThemeMode themeMode, String? localeTag, double ttsVolume, String? passwordHash
 });
 
 
@@ -62,12 +63,13 @@ class _$AppSettingsCopyWithImpl<$Res>
 
 /// Create a copy of AppSettings
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? themeMode = null,Object? localeTag = freezed,Object? ttsVolume = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? themeMode = null,Object? localeTag = freezed,Object? ttsVolume = null,Object? passwordHash = freezed,}) {
   return _then(_self.copyWith(
 themeMode: null == themeMode ? _self.themeMode : themeMode // ignore: cast_nullable_to_non_nullable
 as AppThemeMode,localeTag: freezed == localeTag ? _self.localeTag : localeTag // ignore: cast_nullable_to_non_nullable
 as String?,ttsVolume: null == ttsVolume ? _self.ttsVolume : ttsVolume // ignore: cast_nullable_to_non_nullable
-as double,
+as double,passwordHash: freezed == passwordHash ? _self.passwordHash : passwordHash // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -152,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AppThemeMode themeMode,  String? localeTag,  double ttsVolume)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AppThemeMode themeMode,  String? localeTag,  double ttsVolume,  String? passwordHash)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppSettings() when $default != null:
-return $default(_that.themeMode,_that.localeTag,_that.ttsVolume);case _:
+return $default(_that.themeMode,_that.localeTag,_that.ttsVolume,_that.passwordHash);case _:
   return orElse();
 
 }
@@ -173,10 +175,10 @@ return $default(_that.themeMode,_that.localeTag,_that.ttsVolume);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AppThemeMode themeMode,  String? localeTag,  double ttsVolume)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AppThemeMode themeMode,  String? localeTag,  double ttsVolume,  String? passwordHash)  $default,) {final _that = this;
 switch (_that) {
 case _AppSettings():
-return $default(_that.themeMode,_that.localeTag,_that.ttsVolume);case _:
+return $default(_that.themeMode,_that.localeTag,_that.ttsVolume,_that.passwordHash);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +195,10 @@ return $default(_that.themeMode,_that.localeTag,_that.ttsVolume);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AppThemeMode themeMode,  String? localeTag,  double ttsVolume)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AppThemeMode themeMode,  String? localeTag,  double ttsVolume,  String? passwordHash)?  $default,) {final _that = this;
 switch (_that) {
 case _AppSettings() when $default != null:
-return $default(_that.themeMode,_that.localeTag,_that.ttsVolume);case _:
+return $default(_that.themeMode,_that.localeTag,_that.ttsVolume,_that.passwordHash);case _:
   return null;
 
 }
@@ -208,12 +210,14 @@ return $default(_that.themeMode,_that.localeTag,_that.ttsVolume);case _:
 
 
 class _AppSettings implements AppSettings {
-  const _AppSettings({this.themeMode = AppThemeMode.system, this.localeTag, this.ttsVolume = 0.5});
+  const _AppSettings({this.themeMode = AppThemeMode.system, this.localeTag, this.ttsVolume = 0.5, this.passwordHash});
   
 
 @override@JsonKey() final  AppThemeMode themeMode;
 @override final  String? localeTag;
 @override@JsonKey() final  double ttsVolume;
+/// SHA-256 hex of the destructive-action password. Null = no gate.
+@override final  String? passwordHash;
 
 /// Create a copy of AppSettings
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +229,16 @@ _$AppSettingsCopyWith<_AppSettings> get copyWith => __$AppSettingsCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppSettings&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.localeTag, localeTag) || other.localeTag == localeTag)&&(identical(other.ttsVolume, ttsVolume) || other.ttsVolume == ttsVolume));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppSettings&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.localeTag, localeTag) || other.localeTag == localeTag)&&(identical(other.ttsVolume, ttsVolume) || other.ttsVolume == ttsVolume)&&(identical(other.passwordHash, passwordHash) || other.passwordHash == passwordHash));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,themeMode,localeTag,ttsVolume);
+int get hashCode => Object.hash(runtimeType,themeMode,localeTag,ttsVolume,passwordHash);
 
 @override
 String toString() {
-  return 'AppSettings(themeMode: $themeMode, localeTag: $localeTag, ttsVolume: $ttsVolume)';
+  return 'AppSettings(themeMode: $themeMode, localeTag: $localeTag, ttsVolume: $ttsVolume, passwordHash: $passwordHash)';
 }
 
 
@@ -245,7 +249,7 @@ abstract mixin class _$AppSettingsCopyWith<$Res> implements $AppSettingsCopyWith
   factory _$AppSettingsCopyWith(_AppSettings value, $Res Function(_AppSettings) _then) = __$AppSettingsCopyWithImpl;
 @override @useResult
 $Res call({
- AppThemeMode themeMode, String? localeTag, double ttsVolume
+ AppThemeMode themeMode, String? localeTag, double ttsVolume, String? passwordHash
 });
 
 
@@ -262,12 +266,13 @@ class __$AppSettingsCopyWithImpl<$Res>
 
 /// Create a copy of AppSettings
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? themeMode = null,Object? localeTag = freezed,Object? ttsVolume = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? themeMode = null,Object? localeTag = freezed,Object? ttsVolume = null,Object? passwordHash = freezed,}) {
   return _then(_AppSettings(
 themeMode: null == themeMode ? _self.themeMode : themeMode // ignore: cast_nullable_to_non_nullable
 as AppThemeMode,localeTag: freezed == localeTag ? _self.localeTag : localeTag // ignore: cast_nullable_to_non_nullable
 as String?,ttsVolume: null == ttsVolume ? _self.ttsVolume : ttsVolume // ignore: cast_nullable_to_non_nullable
-as double,
+as double,passwordHash: freezed == passwordHash ? _self.passwordHash : passwordHash // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

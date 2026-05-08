@@ -278,6 +278,51 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsAbout => '關於';
 
   @override
+  String get settingsPasswordSection => '密碼';
+
+  @override
+  String get settingsPasswordSet => '設定密碼';
+
+  @override
+  String get settingsPasswordChange => '變更密碼';
+
+  @override
+  String get settingsPasswordRemove => '移除密碼';
+
+  @override
+  String get settingsPasswordExplain => '刪除紀錄時需要輸入。';
+
+  @override
+  String get passwordPromptTitle => '輸入密碼';
+
+  @override
+  String get passwordSetTitle => '設定密碼';
+
+  @override
+  String get passwordCurrentLabel => '目前密碼';
+
+  @override
+  String get passwordNewLabel => '新密碼';
+
+  @override
+  String get passwordConfirmLabel => '確認密碼';
+
+  @override
+  String get passwordIncorrect => '密碼錯誤';
+
+  @override
+  String get passwordMismatch => '兩次密碼不一致';
+
+  @override
+  String get passwordEmpty => '密碼不能為空';
+
+  @override
+  String get passwordSetToast => '密碼已設定。';
+
+  @override
+  String get passwordRemovedToast => '密碼已移除。';
+
+  @override
   String get themeSystem => '跟隨系統';
 
   @override
@@ -574,6 +619,51 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get settingsAbout => '關於';
+
+  @override
+  String get settingsPasswordSection => '密碼';
+
+  @override
+  String get settingsPasswordSet => '設定密碼';
+
+  @override
+  String get settingsPasswordChange => '變更密碼';
+
+  @override
+  String get settingsPasswordRemove => '移除密碼';
+
+  @override
+  String get settingsPasswordExplain => '刪除紀錄時需要輸入。';
+
+  @override
+  String get passwordPromptTitle => '輸入密碼';
+
+  @override
+  String get passwordSetTitle => '設定密碼';
+
+  @override
+  String get passwordCurrentLabel => '目前密碼';
+
+  @override
+  String get passwordNewLabel => '新密碼';
+
+  @override
+  String get passwordConfirmLabel => '確認密碼';
+
+  @override
+  String get passwordIncorrect => '密碼錯誤';
+
+  @override
+  String get passwordMismatch => '兩次密碼不一致';
+
+  @override
+  String get passwordEmpty => '密碼不能為空';
+
+  @override
+  String get passwordSetToast => '密碼已設定。';
+
+  @override
+  String get passwordRemovedToast => '密碼已移除。';
 
   @override
   String get themeSystem => '跟隨系統';

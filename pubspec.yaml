@@ -55,6 +55,7 @@ dependencies:
   path_provider: ^2.1.5
   path: ^1.9.1
   file_picker: 11.0.0
+  crypto: ^3.0.7
 
 dependency_overrides:
   # Pin win32 so file_picker (which wants ^5.9.x) and wakelock_plus

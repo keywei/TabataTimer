@@ -280,6 +280,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAbout => 'About';
 
   @override
+  String get settingsPasswordSection => 'Password';
+
+  @override
+  String get settingsPasswordSet => 'Set password';
+
+  @override
+  String get settingsPasswordChange => 'Change password';
+
+  @override
+  String get settingsPasswordRemove => 'Remove password';
+
+  @override
+  String get settingsPasswordExplain => 'Required to delete history entries.';
+
+  @override
+  String get passwordPromptTitle => 'Enter password';
+
+  @override
+  String get passwordSetTitle => 'Set password';
+
+  @override
+  String get passwordCurrentLabel => 'Current password';
+
+  @override
+  String get passwordNewLabel => 'New password';
+
+  @override
+  String get passwordConfirmLabel => 'Confirm password';
+
+  @override
+  String get passwordIncorrect => 'Incorrect password';
+
+  @override
+  String get passwordMismatch => 'Passwords don\'t match';
+
+  @override
+  String get passwordEmpty => 'Password can\'t be empty';
+
+  @override
+  String get passwordSetToast => 'Password set.';
+
+  @override
+  String get passwordRemovedToast => 'Password removed.';
+
+  @override
   String get themeSystem => 'Follow system';
 
   @override

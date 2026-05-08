@@ -567,6 +567,96 @@ abstract class AppLocalizations {
   /// **'About'**
   String get settingsAbout;
 
+  /// No description provided for @settingsPasswordSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get settingsPasswordSection;
+
+  /// No description provided for @settingsPasswordSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set password'**
+  String get settingsPasswordSet;
+
+  /// No description provided for @settingsPasswordChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get settingsPasswordChange;
+
+  /// No description provided for @settingsPasswordRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove password'**
+  String get settingsPasswordRemove;
+
+  /// No description provided for @settingsPasswordExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'Required to delete history entries.'**
+  String get settingsPasswordExplain;
+
+  /// No description provided for @passwordPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter password'**
+  String get passwordPromptTitle;
+
+  /// No description provided for @passwordSetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set password'**
+  String get passwordSetTitle;
+
+  /// No description provided for @passwordCurrentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get passwordCurrentLabel;
+
+  /// No description provided for @passwordNewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get passwordNewLabel;
+
+  /// No description provided for @passwordConfirmLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get passwordConfirmLabel;
+
+  /// No description provided for @passwordIncorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password'**
+  String get passwordIncorrect;
+
+  /// No description provided for @passwordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords don\'t match'**
+  String get passwordMismatch;
+
+  /// No description provided for @passwordEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Password can\'t be empty'**
+  String get passwordEmpty;
+
+  /// No description provided for @passwordSetToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Password set.'**
+  String get passwordSetToast;
+
+  /// No description provided for @passwordRemovedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Password removed.'**
+  String get passwordRemovedToast;
+
   /// No description provided for @themeSystem.
   ///
   /// In en, this message translates to:
