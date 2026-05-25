@@ -60,8 +60,15 @@ dependencies:
 dependency_overrides:
   # Pin win32 so file_picker (which wants ^5.9.x) and wakelock_plus
   # (which wants ^6.x) can coexist. We never deploy to Windows, so
-  # this is purely a pub-solver fix; Android builds never load win32.
+  # this is purely a pub-solver fix; Android/iOS builds never load win32.
   win32: ^5.9.0
+  # The Windows-only Dart code in these packages needs win32 6.x APIs
+  # in their newer majors, so pin them to the last majors that compile
+  # against win32 5.x. Keeps `flutter build` from failing during the
+  # cross-platform Dart kernel snapshot.
+  win32_registry: ^2.1.0
+  device_info_plus: ^11.5.0
+  package_info_plus: ^8.3.0
 
 dev_dependencies:
   flutter_test:
