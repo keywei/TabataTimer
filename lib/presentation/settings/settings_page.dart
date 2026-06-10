@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../di/providers.dart';
 import '../../domain/entities/app_settings.dart';
@@ -84,7 +85,51 @@ class _SettingsBody extends ConsumerWidget {
           title: Text(t.appTitle),
           subtitle: const Text('1.0.0'),
         ),
+        const _ProvisioningProfileTile(),
       ],
+    );
+  }
+}
+
+class _ProvisioningProfileTile extends ConsumerWidget {
+  const _ProvisioningProfileTile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(provisioningProfileProvider);
+    return async.maybeWhen(
+      data: (profile) {
+        if (profile == null) return const SizedBox.shrink();
+        final t = AppLocalizations.of(context);
+        final scheme = Theme.of(context).colorScheme;
+        final locale = Localizations.localeOf(context).toString();
+        final localExp = profile.expirationDate.toLocal();
+        final formatted = DateFormat.yMd(locale).add_Hm().format(localExp);
+        final now = DateTime.now();
+        final expired = profile.isExpired(now);
+        final days = profile.remainingFrom(now).inDays;
+        final subtitle = expired
+            ? t.settingsIosProfileExpired(formatted)
+            : t.settingsIosProfileValidUntil(formatted, days);
+        return Column(
+          children: [
+            const Divider(height: 1),
+            ListTile(
+              leading: Icon(
+                Icons.verified_user_outlined,
+                size: 20,
+                color: expired ? scheme.error : null,
+              ),
+              title: Text(t.settingsIosProfileExpiry),
+              subtitle: Text(
+                subtitle,
+                style: TextStyle(color: expired ? scheme.error : null),
+              ),
+            ),
+          ],
+        );
+      },
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }

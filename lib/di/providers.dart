@@ -1,3 +1,6 @@
+import 'dart:io' show Platform;
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +15,7 @@ import '../data/services/file_image_storage.dart';
 import '../data/services/flutter_local_workout_notifier.dart';
 import '../data/services/flutter_tts_speaker.dart';
 import '../data/services/json_history_archive.dart';
+import '../data/services/method_channel_provisioning_profile.dart';
 import '../data/services/silent_loop_keepalive.dart';
 import '../data/services/system_audio_cue.dart';
 import '../data/services/vibration_haptics.dart';
@@ -28,7 +32,9 @@ import '../domain/services/audio_cue.dart';
 import '../domain/services/background_keepalive.dart';
 import '../domain/services/haptics.dart';
 import '../domain/services/history_archive.dart';
+import '../domain/entities/provisioning_profile.dart';
 import '../domain/services/image_storage.dart';
+import '../domain/services/provisioning_profile_info.dart';
 import '../domain/services/tts_speaker.dart';
 import '../domain/services/wake_lock.dart';
 import '../domain/services/workout_notifier.dart';
@@ -103,3 +109,12 @@ final settingsControllerProvider =
 
 final workoutControllerProvider =
     NotifierProvider<WorkoutController, TimerSnapshot>(WorkoutController.new);
+
+final provisioningProfileInfoProvider = Provider<ProvisioningProfileInfo>((_) {
+  if (!kIsWeb && Platform.isIOS) return MethodChannelProvisioningProfile();
+  return const NoopProvisioningProfileInfo();
+});
+
+final provisioningProfileProvider = FutureProvider<ProvisioningProfile?>((ref) {
+  return ref.watch(provisioningProfileInfoProvider).read();
+});

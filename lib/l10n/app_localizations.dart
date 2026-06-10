@@ -567,6 +567,24 @@ abstract class AppLocalizations {
   /// **'About'**
   String get settingsAbout;
 
+  /// No description provided for @settingsIosProfileExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'iOS signing expiry'**
+  String get settingsIosProfileExpiry;
+
+  /// No description provided for @settingsIosProfileValidUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} · {days} days left'**
+  String settingsIosProfileValidUntil(Object date, int days);
+
+  /// No description provided for @settingsIosProfileExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired on {date}'**
+  String settingsIosProfileExpired(Object date);
+
   /// No description provided for @settingsPasswordSection.
   ///
   /// In en, this message translates to:

@@ -278,6 +278,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsAbout => '關於';
 
   @override
+  String get settingsIosProfileExpiry => 'iOS 簽署到期';
+
+  @override
+  String settingsIosProfileValidUntil(Object date, int days) {
+    return '$date · 剩 $days 天';
+  }
+
+  @override
+  String settingsIosProfileExpired(Object date) {
+    return '已於 $date 到期';
+  }
+
+  @override
   String get settingsPasswordSection => '密碼';
 
   @override
@@ -624,6 +637,19 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get settingsAbout => '關於';
+
+  @override
+  String get settingsIosProfileExpiry => 'iOS 簽署到期';
+
+  @override
+  String settingsIosProfileValidUntil(Object date, int days) {
+    return '$date · 剩 $days 天';
+  }
+
+  @override
+  String settingsIosProfileExpired(Object date) {
+    return '已於 $date 到期';
+  }
 
   @override
   String get settingsPasswordSection => '密碼';

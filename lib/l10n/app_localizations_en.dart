@@ -280,6 +280,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAbout => 'About';
 
   @override
+  String get settingsIosProfileExpiry => 'iOS signing expiry';
+
+  @override
+  String settingsIosProfileValidUntil(Object date, int days) {
+    return '$date · $days days left';
+  }
+
+  @override
+  String settingsIosProfileExpired(Object date) {
+    return 'Expired on $date';
+  }
+
+  @override
   String get settingsPasswordSection => 'Password';
 
   @override
