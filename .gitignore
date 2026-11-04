@@ -52,5 +52,21 @@ app.*.map.json
 /android/.kotlin/
 **/.kotlin/
 
-# Claude Code local overrides
-.claude/settings.local.json
+
+
+# AI & Agent configurations, prompts, and guidelines (do not push to git)
+.claude/
+.cursor/
+.cursorrules
+.windsurf/
+.windsurfrules
+.clinerules
+.clinerules/
+.roo/
+.gemini/
+CLAUDE.md
+AGENTS.md
+
+# Local presentation decks & temporary docs
+TabataTimer_Presentation.html
+*.presentation.html
